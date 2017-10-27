@@ -4,9 +4,9 @@ Trabajo Practico de Matematica Superior - Ajuste
 ## Integrantes
  German Caceres ()<br />
  Gustavo Bitocchi ()<br />
- Lucas Ezequiel Romano ()<br />
+ Lucas Ezequiel Romano (155467-0)<br />
  Juliana Rossi ()<br />
- Ivan Schecherer ()<br />
+ Ivan Schecherer () *Como las bujias*<br />
 
 ## To Do:
 - [ ] Aproximacion Hiperbolica
