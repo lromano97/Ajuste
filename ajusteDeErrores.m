@@ -1,7 +1,7 @@
 function main
   listX = input("Ingrese una lista de valores para x")
   listY = input("Ingrese una lista de valores para y")
-  aproximacionPotencial(listX, listY)
+  aproximacionLineal(listX, listY)
 
 endfunction
 
@@ -38,16 +38,22 @@ function aproximacionHiperbolica(listX, listY)
 endfunction
 
 function aproximacionLineal(listX, listY)
-  cantFilas = size(listX);
-  matrizAproximacion = zeros(cantFilas(1,2)+1, 2);
-  for i = 1:cantFilas
-    matrizAproximacion(i,1) = listX(i,1).**2;
-    matrizAproximacion(i,2) = listX(i,1)*listY(i,1);
+  cantFilas = size(listX)
+  matrizAproximacion = zeros(cantFilas(1,2)+1, 4)
+  for i = 1:cantFilas(1,2)
+    matrizAproximacion(i,1) = listX(1,i)
+    matrizAproximacion(i,2) = listY(1,i)
+    matrizAproximacion(i,3) = listX(1,i).**2
+    matrizAproximacion(i,4) = listX(1,i)*listY(1,i)
   endfor
-  matrizAproximacion(cantFilas(1,2)+1,1) = sum(matrizAproximacion(:,1));
-  sumatoriaXY = sum(matrizAproximacion(:,2));
-  sumatoriaX = sum(listX(:,1));
-  sumatoriaY = sum(listY(:,1));
+  matrizAproximacion(cantFilas(1,2)+1,1) = sum(matrizAproximacion(:,1))
+  matrizAproximacion(cantFilas(1,2)+1,2) = sum(matrizAproximacion(:,2))
+  matrizAproximacion(cantFilas(1,2)+1,3) = sum(matrizAproximacion(:,3))
+  matrizAproximacion(cantFilas(1,2)+1,4) = sum(matrizAproximacion(:,4))
+  
+  Matrix1 = [matrizAproximacion(cantFilas(1,2)+1,3), matrizAproximacion(cantFilas(1,2)+1,1);matrizAproximacion(cantFilas(1,2)+1,1), cantFilas(1,2)]
+  Matrix2 = [matrizAproximacion(cantFilas(1,2)+1,4); matrizAproximacion(cantFilas(1,2)+1,2)] 
+  Solucion = Matrix1\Matrix2
 endfunction
 
 function aproximacionParabola(listX, listY)
