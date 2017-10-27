@@ -1,14 +1,14 @@
 # Ajuste
 Trabajo Practico de Matematica Superior - Ajuste
 
-##Integrantes
- German Caceres ()
- Gustavo Bitocchi ()
- Lucas Ezequiel Romano ()
- Juliana Rossi ()
- Ivan Schecherer ()
+## Integrantes
+ German Caceres ()<br />
+ Gustavo Bitocchi ()<br />
+ Lucas Ezequiel Romano ()<br />
+ Juliana Rossi ()<br />
+ Ivan Schecherer ()<br />
 
-##To Do:
+## To Do:
 - [ ] Aproximacion Hiperbolica
 - [ ] Aproximacion Parabola
 - [X] Aproximacion Exponencial
