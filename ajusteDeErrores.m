@@ -1,10 +1,15 @@
+%--Carga de packages
+
+
+
 function main
+
+  interfazPrincipal()
   listX = input("Ingrese una lista de valores para x")
   listY = input("Ingrese una lista de valores para y")
   aproximacionParabola(listX, listY)
-
 endfunction
-
+%Auxiliares
 function aproximacionPotencial(listX, listY)
   cantFilas = size(listX)
   matrizAproximacion = zeros(cantFilas(1,2)+1, 6)
@@ -46,6 +51,9 @@ function aproximacionLineal(listX, listY)
   Matrix1 = [matrizAproximacion(cantFilas(1,2)+1,3), matrizAproximacion(cantFilas(1,2)+1,1);matrizAproximacion(cantFilas(1,2)+1,1), cantFilas(1,2)]
   Matrix2 = [matrizAproximacion(cantFilas(1,2)+1,4); matrizAproximacion(cantFilas(1,2)+1,2)] 
   Solucion = Matrix1\Matrix2
+  a = num2str(Solucion(1,1))
+  b = num2str(Solucion(2,1))
+  msgbox(cstrcat("La funcion es:\n","y = ",a," x + ",b),"Ajuste App");
 endfunction
 
 function aproximacionHiperbolica(listX, listY)
@@ -66,6 +74,7 @@ function aproximacionHiperbolica(listX, listY)
   Solucion = Matrix1\Matrix2
   Solucion(1,1) = Solucion(1,1)*(Solucion(2,1).**(-1))
   Solucion(2,1) = Solucion(2,1).**(-1)
+ 
 endfunction
 
 function aproximacionParabola(listX, listY)
@@ -91,3 +100,75 @@ function aproximacionParabola(listX, listY)
   Matrix2 = [matrizAproximacion(cantFilas(1,2)+1,7); matrizAproximacion(cantFilas(1,2)+1,6);matrizAproximacion(cantFilas(1,2)+1,2)]
   Solucion = Matrix1\Matrix2
 endfunction
+
+function interfazPrincipal()
+   pkg load control
+   pkg load symbolic
+   seleccionMenuOpciones = inputdlg({"Elija la accion que desee realizar:\n\n-1-Aproximar\n\n-2-Comparar aproximaciones\n\n -3-Finalizar\n\n"},"Ajuste App", [0.5]);
+   ok=0;
+while(ok == 0)
+      switch(str2num(seleccionMenuOpciones{1}))
+        case(1)%Aproximacion Lineal
+          interfazAjuste()
+        case(2)
+          interfazComparaciones() 
+        case(3)
+           ok = 1;
+           exit;
+         endswitch
+  endwhile
+endfunction
+
+
+
+function interfazAjuste()
+  auxiliarX = inputdlg({"Ingrese una lista de valores para x"},"Ajuste App",[0.5]);
+  
+  while (isempty(str2num(auxiliarX{1}))) 
+      errordlg("No ingreso los valores de x ", "Error al procesar");
+      auxiliarX = inputdlg({"Ingrese una lista de valores para x"},"Ajuste App",[0.5]);
+  endwhile
+  
+  auxiliarY = inputdlg({"Ingrese una lista de valores para y"},"Ajuste App",[0.5]);
+    while (isempty(str2num(auxiliarY{1}))) 
+      errordlg("No ingreso los valores de y ", "Error al procesar");
+      auxiliarY = inputdlg({"Ingrese una lista de valores para y"},"Ajuste App",[0.5]);
+  endwhile
+
+  listX = str2num(auxiliarX{1});
+  listY = str2num(auxiliarY{1});
+ 
+  %Me falta manejar el error
+    seleccionMenuOpcionesMostrar = inputdlg({"Elija opcion de ajuste:\n\n-1-Recta de minimos cuadrados\n\n-2-Parabola de minimos cuadrados\n\n-3-Aproximacion Exponencial\n\n-4- Aproximacion Potencial\n\n-5-Aproximacion Hiperbola\n\n"},"Ajuste App", [0.5]);
+    ok=0;
+       switch(str2num(seleccionMenuOpcionesMostrar{1}))
+            case(1)%Aproximacion Lineal 
+              aproximacionLineal(listX,listY);
+           case(2)
+              aproximacionParabola(listX,listY);
+           case(3)
+              aproximacionExponencial(listX,listY);
+           case(4)
+             aproximacionPotencial(listX,listY);
+           case(5)
+            aproximacionHiperbolica(listX,listY);
+           exit;
+         endswitch
+  interfazPrincipal();
+endfunction
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
