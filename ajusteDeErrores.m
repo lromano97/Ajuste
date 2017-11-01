@@ -5,100 +5,97 @@
 function main
 
   interfazPrincipal()
-  listX = input("Ingrese una lista de valores para x")
-  listY = input("Ingrese una lista de valores para y")
-  aproximacionParabola(listX, listY)
 endfunction
 %Auxiliares
-function aproximacionPotencial(listX, listY)
+function [Solucion] = aproximacionPotencial(listX, listY)
   cantFilas = size(listX)
-  matrizAproximacion = zeros(cantFilas(1,2)+1, 6)
+  matrizAproximacion = zeros(cantFilas(1,2)+1, 6);
   for i = 1:cantFilas(1,2)
-    matrizAproximacion(i,1) = listX(1,i)
-    matrizAproximacion(i,2) = listY(1,i)
-    matrizAproximacion(i, 3) = reallog(listX(1,i))
-    matrizAproximacion(i, 4) = reallog(listX(1,i)).**2
-    matrizAproximacion(i,5) = reallog(listY(1,i))
-    matrizAproximacion(i,6) = reallog(listX(1,i))*reallog(listY(1,i))
+    matrizAproximacion(i,1) = listX(1,i);
+    matrizAproximacion(i,2) = listY(1,i);
+    matrizAproximacion(i, 3) = reallog(listX(1,i));
+    matrizAproximacion(i, 4) = reallog(listX(1,i)).**2;
+    matrizAproximacion(i,5) = reallog(listY(1,i));
+    matrizAproximacion(i,6) = reallog(listX(1,i))*reallog(listY(1,i));
   endfor
-  matrizAproximacion(cantFilas(1,2)+1,1) = sum(matrizAproximacion(:,1))
-  matrizAproximacion(cantFilas(1,2)+1,2) = sum(matrizAproximacion(:,2))
-  matrizAproximacion(cantFilas(1,2)+1,3) = sum(matrizAproximacion(:,3))
-  matrizAproximacion(cantFilas(1,2)+1,4) = sum(matrizAproximacion(:,4))
-  matrizAproximacion(cantFilas(1,2)+1,5) = sum(matrizAproximacion(:,5))
-  matrizAproximacion(cantFilas(1,2)+1,6) = sum(matrizAproximacion(:,6))  
+  matrizAproximacion(cantFilas(1,2)+1,1) = sum(matrizAproximacion(:,1));
+  matrizAproximacion(cantFilas(1,2)+1,2) = sum(matrizAproximacion(:,2));
+  matrizAproximacion(cantFilas(1,2)+1,3) = sum(matrizAproximacion(:,3));
+  matrizAproximacion(cantFilas(1,2)+1,4) = sum(matrizAproximacion(:,4));
+  matrizAproximacion(cantFilas(1,2)+1,5) = sum(matrizAproximacion(:,5));
+  matrizAproximacion(cantFilas(1,2)+1,6) = sum(matrizAproximacion(:,6)) ; 
   Matrix1 = [matrizAproximacion(cantFilas(1,2)+1,4), matrizAproximacion(cantFilas(1,2)+1,3) ; matrizAproximacion(cantFilas(1,2)+1,3), cantFilas(1,2)]
-  Matrix2 = [matrizAproximacion(cantFilas(1,2)+1,6); matrizAproximacion(cantFilas(1,2)+1,5)]
-  Solucion = Matrix1\Matrix2
-  sizeMatrix2 = size(Matrix2)
-  Solucion(sizeMatrix2(1,1),1) = exp(Solucion(sizeMatrix2(1,1),1))
+  Matrix2 = [matrizAproximacion(cantFilas(1,2)+1,6); matrizAproximacion(cantFilas(1,2)+1,5)];
+  Solucion = Matrix1\Matrix2;
+  sizeMatrix2 = size(Matrix2);
+  Solucion(sizeMatrix2(1,1),1) = exp(Solucion(sizeMatrix2(1,1),1));
 endfunction
 
-function aproximacionLineal(listX, listY)
-  cantFilas = size(listX)
-  matrizAproximacion = zeros(cantFilas(1,2)+1, 4)
+function [Solucion] = aproximacionLineal(listX, listY)
+  cantFilas = size(listX);
+  matrizAproximacion = zeros(cantFilas(1,2)+1, 4);
   for i = 1:cantFilas(1,2)
-    matrizAproximacion(i,1) = listX(1,i)
-    matrizAproximacion(i,2) = listY(1,i)
-    matrizAproximacion(i,3) = listX(1,i).**2
-    matrizAproximacion(i,4) = listX(1,i)*listY(1,i)
+    matrizAproximacion(i,1) = listX(1,i);
+    matrizAproximacion(i,2) = listY(1,i);
+    matrizAproximacion(i,3) = listX(1,i).**2;
+    matrizAproximacion(i,4) = listX(1,i)*listY(1,i);
   endfor
-  matrizAproximacion(cantFilas(1,2)+1,1) = sum(matrizAproximacion(:,1))
-  matrizAproximacion(cantFilas(1,2)+1,2) = sum(matrizAproximacion(:,2))
-  matrizAproximacion(cantFilas(1,2)+1,3) = sum(matrizAproximacion(:,3))
-  matrizAproximacion(cantFilas(1,2)+1,4) = sum(matrizAproximacion(:,4))
+  matrizAproximacion(cantFilas(1,2)+1,1) = sum(matrizAproximacion(:,1));
+  matrizAproximacion(cantFilas(1,2)+1,2) = sum(matrizAproximacion(:,2));
+  matrizAproximacion(cantFilas(1,2)+1,3) = sum(matrizAproximacion(:,3));
+  matrizAproximacion(cantFilas(1,2)+1,4) = sum(matrizAproximacion(:,4));
   
-  Matrix1 = [matrizAproximacion(cantFilas(1,2)+1,3), matrizAproximacion(cantFilas(1,2)+1,1);matrizAproximacion(cantFilas(1,2)+1,1), cantFilas(1,2)]
-  Matrix2 = [matrizAproximacion(cantFilas(1,2)+1,4); matrizAproximacion(cantFilas(1,2)+1,2)] 
-  Solucion = Matrix1\Matrix2
-  a = num2str(Solucion(1,1))
-  b = num2str(Solucion(2,1))
-  msgbox(cstrcat("La funcion es:\n","y = ",a," x + ",b),"Ajuste App");
-endfunction
-
-function aproximacionHiperbolica(listX, listY)
-  cantFilas = size(listX)
-  matrizAproximacion = zeros(cantFilas(1,2)+1, 4)
-  for i = 1:cantFilas(1,2)
-    matrizAproximacion(i,1) = listX(1,i)
-    matrizAproximacion(i,2) = listY(1,i)
-    matrizAproximacion(i, 3) = listX(1,i).**2
-    matrizAproximacion(i, 4) = listX(1,i)*listY(1,i)
-  endfor
-  matrizAproximacion(cantFilas(1,2)+1,1) = sum(matrizAproximacion(:,1))
-  matrizAproximacion(cantFilas(1,2)+1,2) = sum(matrizAproximacion(:,2))
-  matrizAproximacion(cantFilas(1,2)+1,3) = sum(matrizAproximacion(:,3))
-  matrizAproximacion(cantFilas(1,2)+1,4) = sum(matrizAproximacion(:,4))
-  Matrix1 = [cantFilas(1,2),matrizAproximacion(cantFilas(1,2)+1,1);matrizAproximacion(cantFilas(1,2)+1,1),matrizAproximacion(cantFilas(1,2)+1,3)]
-  Matrix2 = [matrizAproximacion(cantFilas(1,2)+1,2);matrizAproximacion(cantFilas(1,2)+1,4)]
-  Solucion = Matrix1\Matrix2
-  Solucion(1,1) = Solucion(1,1)*(Solucion(2,1).**(-1))
-  Solucion(2,1) = Solucion(2,1).**(-1)
+  Matrix1 = [matrizAproximacion(cantFilas(1,2)+1,3), matrizAproximacion(cantFilas(1,2)+1,1);matrizAproximacion(cantFilas(1,2)+1,1), cantFilas(1,2)];
+  Matrix2 = [matrizAproximacion(cantFilas(1,2)+1,4); matrizAproximacion(cantFilas(1,2)+1,2)] ;
+  Solucion = Matrix1\Matrix2;
  
 endfunction
 
-function aproximacionParabola(listX, listY)
-  cantFilas = size(listX)
-  matrizAproximacion = zeros(cantFilas(1,2)+1, 7)
+function [Solucion] = aproximacionHiperbolica(listX, listY)
+  cantFilas = size(listX);
+  matrizAproximacion = zeros(cantFilas(1,2)+1, 4);
   for i = 1:cantFilas(1,2)
-    matrizAproximacion(i,1) = listX(1,i)
-    matrizAproximacion(i,2) = listY(1,i)
-    matrizAproximacion(i,3) = listX(1,i).**2
-    matrizAproximacion(i,4) = listX(1,i).**3
-    matrizAproximacion(i,5) = listX(1,i).**4
-    matrizAproximacion(i,6) = listX(1,i)*listY(1,i)
-    matrizAproximacion(i,7) = listY(1,i)*listX(1,i).**2
+    matrizAproximacion(i,1) = listX(1,i);
+    matrizAproximacion(i,2) = listY(1,i);
+    matrizAproximacion(i, 3) = listX(1,i).**2;
+    matrizAproximacion(i, 4) = listX(1,i)*listY(1,i);
   endfor
-  matrizAproximacion(cantFilas(1,2)+1,1) = sum(matrizAproximacion(:,1))
-  matrizAproximacion(cantFilas(1,2)+1,2) = sum(matrizAproximacion(:,2))
-  matrizAproximacion(cantFilas(1,2)+1,3) = sum(matrizAproximacion(:,3))
-  matrizAproximacion(cantFilas(1,2)+1,4) = sum(matrizAproximacion(:,4))
-  matrizAproximacion(cantFilas(1,2)+1,5) = sum(matrizAproximacion(:,5))
-  matrizAproximacion(cantFilas(1,2)+1,6) = sum(matrizAproximacion(:,6))
-  matrizAproximacion(cantFilas(1,2)+1,7) = sum(matrizAproximacion(:,7))
-  Matrix1 = [matrizAproximacion(cantFilas(1,2)+1,3), matrizAproximacion(cantFilas(1,2)+1,4), matrizAproximacion(cantFilas(1,2)+1,5);matrizAproximacion(cantFilas(1,2)+1,1), matrizAproximacion(cantFilas(1,2)+1,3), matrizAproximacion(cantFilas(1,2)+1,4);cantFilas(1,2), matrizAproximacion(cantFilas(1,2)+1,1), matrizAproximacion(cantFilas(1,2)+1,3)]
-  Matrix2 = [matrizAproximacion(cantFilas(1,2)+1,7); matrizAproximacion(cantFilas(1,2)+1,6);matrizAproximacion(cantFilas(1,2)+1,2)]
-  Solucion = Matrix1\Matrix2
+  matrizAproximacion(cantFilas(1,2)+1,1) = sum(matrizAproximacion(:,1));
+  matrizAproximacion(cantFilas(1,2)+1,2) = sum(matrizAproximacion(:,2));
+  matrizAproximacion(cantFilas(1,2)+1,3) = sum(matrizAproximacion(:,3));
+  matrizAproximacion(cantFilas(1,2)+1,4) = sum(matrizAproximacion(:,4));
+  Matrix1 = [cantFilas(1,2),matrizAproximacion(cantFilas(1,2)+1,1);matrizAproximacion(cantFilas(1,2)+1,1),matrizAproximacion(cantFilas(1,2)+1,3)];
+  Matrix2 = [matrizAproximacion(cantFilas(1,2)+1,2);matrizAproximacion(cantFilas(1,2)+1,4)];
+  Solucion = Matrix1\Matrix2;
+  Solucion(1,1) = Solucion(1,1)*(Solucion(2,1).**(-1));
+  Solucion(2,1) = Solucion(2,1).**(-1);
+  
+ 
+endfunction
+
+function [Solucion] = aproximacionParabola(listX, listY)
+  cantFilas = size(listX);
+  matrizAproximacion = zeros(cantFilas(1,2)+1, 7);
+  for i = 1:cantFilas(1,2)
+    matrizAproximacion(i,1) = listX(1,i);
+    matrizAproximacion(i,2) = listY(1,i);
+    matrizAproximacion(i,3) = listX(1,i).**2;
+    matrizAproximacion(i,4) = listX(1,i).**3;
+    matrizAproximacion(i,5) = listX(1,i).**4;
+    matrizAproximacion(i,6) = listX(1,i)*listY(1,i);
+    matrizAproximacion(i,7) = listY(1,i)*listX(1,i).**2;
+  endfor
+  matrizAproximacion(cantFilas(1,2)+1,1) = sum(matrizAproximacion(:,1));
+  matrizAproximacion(cantFilas(1,2)+1,2) = sum(matrizAproximacion(:,2));
+  matrizAproximacion(cantFilas(1,2)+1,3) = sum(matrizAproximacion(:,3));
+  matrizAproximacion(cantFilas(1,2)+1,4) = sum(matrizAproximacion(:,4));
+  matrizAproximacion(cantFilas(1,2)+1,5) = sum(matrizAproximacion(:,5));
+  matrizAproximacion(cantFilas(1,2)+1,6) = sum(matrizAproximacion(:,6));
+  matrizAproximacion(cantFilas(1,2)+1,7) = sum(matrizAproximacion(:,7));
+  Matrix1 = [matrizAproximacion(cantFilas(1,2)+1,3), matrizAproximacion(cantFilas(1,2)+1,4), matrizAproximacion(cantFilas(1,2)+1,5);matrizAproximacion(cantFilas(1,2)+1,1), matrizAproximacion(cantFilas(1,2)+1,3), matrizAproximacion(cantFilas(1,2)+1,4);cantFilas(1,2), matrizAproximacion(cantFilas(1,2)+1,1), matrizAproximacion(cantFilas(1,2)+1,3)];
+  Matrix2 = [matrizAproximacion(cantFilas(1,2)+1,7); matrizAproximacion(cantFilas(1,2)+1,6);matrizAproximacion(cantFilas(1,2)+1,2)];
+  Solucion = Matrix1\Matrix2;
+  
 endfunction
 
 function interfazPrincipal()
@@ -143,16 +140,20 @@ function interfazAjuste()
     ok=0;
        switch(str2num(seleccionMenuOpcionesMostrar{1}))
             case(1)%Aproximacion Lineal 
-              aproximacionLineal(listX,listY);
+              [Solucion]= aproximacionLineal(listX,listY);
+              msgbox(cstrcat("La funcion es:\n","y = ",num2str(Solucion(1,1))," x+ ", num2str(Solucion(2,1))),"Ajuste App");
            case(2)
-              aproximacionParabola(listX,listY);
+              [Solucion]= aproximacionParabola(listX,listY);
+              msgbox(cstrcat("La funcion es:\n","y = ",num2str(Solucion(1,1))," x^2+ ",num2str(Solucion(2,1))," x ",num2str(Solucion(3,1))),"Ajuste App");
            case(3)
-              aproximacionExponencial(listX,listY);
+               msgbox("Coming Soon!");
+              %aproximacionExponencial(listX,listY);
            case(4)
-             aproximacionPotencial(listX,listY);
+             [Solucion] = aproximacionPotencial(listX,listY);
+             msgbox(cstrcat("La funcion es:\n","y = ",num2str(Solucion(2,1))," x ^ ",num2str(Solucion(1,1))),"Ajuste App");
            case(5)
             aproximacionHiperbolica(listX,listY);
-           exit;
+             msgbox(cstrcat("La funcion es:\n","y = ",num2str(Solucion(2,1))," x ^ ",num2str(Solucion(1,1))),"Ajuste App");
          endswitch
   interfazPrincipal();
 endfunction
