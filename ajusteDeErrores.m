@@ -116,45 +116,55 @@ while(ok == 0)
   endwhile
 endfunction
 
+function ploteoPuntos(listX,listY)
+  x = listX;
+  y = listY;
+  plot(x,y,'rx','MarkerSize',8); 
+  xlabel('x');
+  ylabel('y');
+endfunction
 
+function interfazComparaciones()
+  endfunction
+
+function [x] valores(parametro)
+  x = inputdlg({cstrcat("Ingrese una lista de valores para ",parametro)},"Ajuste App",[0.5]);
+  while (isempty(str2num(auxiliarX{1}))) 
+      errordlg(cstrcat("No ingreso los valores de ",parametro), "Error al procesar");
+      x = inputdlg({cstrcat("Ingrese una lista de valores para ",parametro)},"Ajuste App",[0.5]);
+  endwhile
+  
 
 function interfazAjuste()
-  auxiliarX = inputdlg({"Ingrese una lista de valores para x"},"Ajuste App",[0.5]);
-  
-  while (isempty(str2num(auxiliarX{1}))) 
-      errordlg("No ingreso los valores de x ", "Error al procesar");
-      auxiliarX = inputdlg({"Ingrese una lista de valores para x"},"Ajuste App",[0.5]);
-  endwhile
-  
-  auxiliarY = inputdlg({"Ingrese una lista de valores para y"},"Ajuste App",[0.5]);
-    while (isempty(str2num(auxiliarY{1}))) 
-      errordlg("No ingreso los valores de y ", "Error al procesar");
-      auxiliarY = inputdlg({"Ingrese una lista de valores para y"},"Ajuste App",[0.5]);
-  endwhile
+  [auxiliarX] = valores("x");
+  [auxiliarY] = valores("y")
 
   listX = str2num(auxiliarX{1});
   listY = str2num(auxiliarY{1});
- 
-  %Me falta manejar el error
+
     seleccionMenuOpcionesMostrar = inputdlg({"Elija opcion de ajuste:\n\n-1-Recta de minimos cuadrados\n\n-2-Parabola de minimos cuadrados\n\n-3-Aproximacion Exponencial\n\n-4- Aproximacion Potencial\n\n-5-Aproximacion Hiperbola\n\n"},"Ajuste App", [0.5]);
     ok=0;
        switch(str2num(seleccionMenuOpcionesMostrar{1}))
             case(1)%Aproximacion Lineal 
               [Solucion]= aproximacionLineal(listX,listY);
-              msgbox(cstrcat("La funcion es:\n","y = ",num2str(Solucion(1,1))," x+ ", num2str(Solucion(2,1))),"Ajuste App");
+              msgbox(cstrcat("Se utilizó el metodo: Recta de minimos cuadrados \n\nLa funcion es:\n","y = ",num2str(Solucion(1,1))," x+ ", num2str(Solucion(2,1))),"Ajuste App");
+              ploteoPuntos(listX,listY);
            case(2)
               [Solucion]= aproximacionParabola(listX,listY);
-              msgbox(cstrcat("La funcion es:\n","y = ",num2str(Solucion(1,1))," x^2+ ",num2str(Solucion(2,1))," x ",num2str(Solucion(3,1))),"Ajuste App");
+              msgbox(cstrcat("Se utilizó el metodo: Parabola de minimos cuadrados \n\nLa funcion es:\n","y = ",num2str(Solucion(1,1))," x^2+ ",num2str(Solucion(2,1))," x ",num2str(Solucion(3,1))),"Ajuste App");
+               ploteoPuntos(listX,listY);
            case(3)
-               msgbox("Coming Soon!");
+               msgbox("Se utilizó el metodo: Aproximacion Exponencial\n\n");
               %aproximacionExponencial(listX,listY);
            case(4)
              [Solucion] = aproximacionPotencial(listX,listY);
-             msgbox(cstrcat("La funcion es:\n","y = ",num2str(Solucion(2,1))," x ^ ",num2str(Solucion(1,1))),"Ajuste App");
+             msgbox(cstrcat("Se utilizó el metodo: Aproximacion Potencial\n\nLa funcion es:\n","y = ",num2str(Solucion(2,1))," x ^ ",num2str(Solucion(1,1))),"Ajuste App");
            case(5)
-            aproximacionHiperbolica(listX,listY);
-             msgbox(cstrcat("La funcion es:\n","y = ",num2str(Solucion(2,1))," x ^ ",num2str(Solucion(1,1))),"Ajuste App");
+            [Solucion]= aproximacionHiperbolica(listX,listY);
+              msgbox("Se utilizó el metodo: Aproximacion Hiperbola \n\n");
+             %msgbox(cstrcat("La funcion es:\n","y = ",num2str(Solucion(2,1))," x ^ ",num2str(Solucion(1,1))),"Ajuste App");
          endswitch
+   uiwait();
   interfazPrincipal();
 endfunction
 
