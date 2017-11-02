@@ -127,13 +127,13 @@ endfunction
 function interfazComparaciones()
   endfunction
 
-function [x] valores(parametro)
+function [x] = valores(parametro)
   x = inputdlg({cstrcat("Ingrese una lista de valores para ",parametro)},"Ajuste App",[0.5]);
-  while (isempty(str2num(auxiliarX{1}))) 
+  while (isempty(str2num(x{1}))) 
       errordlg(cstrcat("No ingreso los valores de ",parametro), "Error al procesar");
       x = inputdlg({cstrcat("Ingrese una lista de valores para ",parametro)},"Ajuste App",[0.5]);
   endwhile
-  
+ endfunction
 
 function interfazAjuste()
   [auxiliarX] = valores("x");
