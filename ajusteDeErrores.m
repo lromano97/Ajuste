@@ -101,18 +101,21 @@ endfunction
 function interfazPrincipal()
    pkg load control
    pkg load symbolic
-   seleccionMenuOpciones = inputdlg({"Elija la accion que desee realizar:\n\n-1-Aproximar\n\n-2-Comparar aproximaciones\n\n -3-Finalizar\n\n"},"Ajuste App", [0.5]);
    ok=0;
-while(ok == 0)
-      switch(str2num(seleccionMenuOpciones{1}))
-        case(1)%Aproximacion Lineal
-          interfazAjuste()
-        case(2)
-          interfazComparaciones() 
-        case(3)
+   while(ok == 0)
+     seleccionMenuOpciones = inputdlg({"Elija la accion que desee realizar:\n\n1- Aproximar\n\n2- Comparar aproximaciones\n\n3- Finalizar\n\n"},"Ajuste App", [0.5]);
+     cargoOk=0
+     switch(str2num(seleccionMenuOpciones{1}))
+       case(1)%Aproximacion Lineal
+         while(cargoOk == 0)
+           cargoOk = interfazAjuste()
+         endwhile
+       case(2)
+           interfazComparaciones() 
+       case(3)
            ok = 1;
            exit;
-         endswitch
+    endswitch
   endwhile
 endfunction
 
@@ -135,37 +138,36 @@ function [x] = valores(parametro)
   endwhile
  endfunction
 
-function interfazAjuste()
-  [auxiliarX] = valores("x");
-  [auxiliarY] = valores("y")
-
-  listX = str2num(auxiliarX{1});
-  listY = str2num(auxiliarY{1});
-
+function esOK = interfazAjuste()
+  datosAproximacion = inputdlg({"Ingrese la lista de valores para X","Ingrese la lista de valores de Y", "Ingrese la cantidad de decimales de la aproximacion"},"Ajuste App",[0.5]);
+    if(or(isempty(datosAproximacion{1}), isempty(datosAproximacion{2}), isempty(datosAproximacion{3})))
+      errordlg("Ha ingresado incorrectamente los datos para generar la aproximacion", "Error al procesar");
+      esOK = 0;
+    else
+    listX = datosAproximacion{1};
+    listY = datosAproximacion{2};
+    decimales = datosAproximacion{3};
+    esOK = 1;
+    %Me falta manejar el error
     seleccionMenuOpcionesMostrar = inputdlg({"Elija opcion de ajuste:\n\n-1-Recta de minimos cuadrados\n\n-2-Parabola de minimos cuadrados\n\n-3-Aproximacion Exponencial\n\n-4- Aproximacion Potencial\n\n-5-Aproximacion Hiperbola\n\n"},"Ajuste App", [0.5]);
-    ok=0;
        switch(str2num(seleccionMenuOpcionesMostrar{1}))
             case(1)%Aproximacion Lineal 
               [Solucion]= aproximacionLineal(listX,listY);
-              msgbox(cstrcat("Se utilizó el metodo: Recta de minimos cuadrados \n\nLa funcion es:\n","y = ",num2str(Solucion(1,1))," x+ ", num2str(Solucion(2,1))),"Ajuste App");
-              ploteoPuntos(listX,listY);
+              msgbox(cstrcat("La funcion es:\n","y = ",num2str(Solucion(1,1))," x+ ", num2str(Solucion(2,1))),"Ajuste App");
            case(2)
               [Solucion]= aproximacionParabola(listX,listY);
-              msgbox(cstrcat("Se utilizó el metodo: Parabola de minimos cuadrados \n\nLa funcion es:\n","y = ",num2str(Solucion(1,1))," x^2+ ",num2str(Solucion(2,1))," x ",num2str(Solucion(3,1))),"Ajuste App");
-               ploteoPuntos(listX,listY);
+              msgbox(cstrcat("La funcion es:\n","y = ",num2str(Solucion(1,1))," x^2+ ",num2str(Solucion(2,1))," x ",num2str(Solucion(3,1))),"Ajuste App");
            case(3)
-               msgbox("Se utilizó el metodo: Aproximacion Exponencial\n\n");
+               msgbox("Coming Soon!");
               %aproximacionExponencial(listX,listY);
            case(4)
              [Solucion] = aproximacionPotencial(listX,listY);
-             msgbox(cstrcat("Se utilizó el metodo: Aproximacion Potencial\n\nLa funcion es:\n","y = ",num2str(Solucion(2,1))," x ^ ",num2str(Solucion(1,1))),"Ajuste App");
+             msgbox(cstrcat("La funcion es:\n","y = ",num2str(Solucion(2,1))," x ^ ",num2str(Solucion(1,1))),"Ajuste App");
            case(5)
-            [Solucion]= aproximacionHiperbolica(listX,listY);
-              msgbox("Se utilizó el metodo: Aproximacion Hiperbola \n\n");
-             %msgbox(cstrcat("La funcion es:\n","y = ",num2str(Solucion(2,1))," x ^ ",num2str(Solucion(1,1))),"Ajuste App");
+            aproximacionHiperbolica(listX,listY);
+             msgbox(cstrcat("La funcion es:\n","y = ",num2str(Solucion(2,1))," x ^ ",num2str(Solucion(1,1))),"Ajuste App");
          endswitch
-   uiwait();
-  interfazPrincipal();
+     endif 
 endfunction
 
 
