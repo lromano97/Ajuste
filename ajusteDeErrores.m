@@ -28,7 +28,7 @@ function [Solucion] = aproximacionPotencial(listX, listY)
   Solucion(sizeMatrix2(1,1),1) = exp(Solucion(sizeMatrix2(1,1),1));
 endfunction
 
-function [solucion] = aproximacionExponencial(listX,listY)
+function [Solucion] = aproximacionExponencial(listX,listY)
   cantFilas = size(listX);
   matrizAproximacion = zeros(cantFilas(1,2)+1,5);
   for i=1:cantFilas(1,2)
@@ -134,7 +134,7 @@ function interfazPrincipal()
            interfazComparaciones() 
        case(3)
            ok = 1;
-           exit;
+           return;
        otherwise
             errordlg("La opcion requerida es incorrecta, por favor vuelvalo a intentar", "Error de peticion");
     endswitch
@@ -160,6 +160,16 @@ function [x] = valores(parametro)
   endwhile
 endfunction
 
+function [seleccion, flag] = mostrarMenuSeleccionFuncionalidad()
+  listaDeOpciones = {"Mostrar funcion aproximante", "Detalles de calculos", "Grafica"};
+  [seleccion, flag] = listdlg("ListString", listaDeOpciones, "PromptString", "Seleccione la funcionalidad deseada:", "Name", "Menu Funcionalidad", "ListSize", [290 140], "SelectionMode", "Single", "OKString", "Ok", "CancelString", "Cancelar");
+endfunction
+
+function [tipoFuncion, flag] = mostrarMenuFuncionesAproximantes()
+  listaDeOpciones = {"Recta de minimos cuadrados", "Parabola de minimos cuadrados", "Aproximacion Potencial", "Aproximacion Exponencial", "Aproximacion Hiperbolica"};
+  [tipoFuncion, flag] = listdlg("ListString", listaDeOpciones, "PromptString", "Seleccione la funcion que desea utilizar para aproximar:", "Name", "Menu Funcion", "ListSize", [290 140], "SelectionMode", "Single", "OKString", "Ok", "CancelString", "Cancelar");
+endfunction
+
 function esOK = interfazAjuste()
     datosAproximacion = inputdlg({"Ingrese la lista de valores para X","Ingrese la lista de valores de Y", "Ingrese la cantidad de decimales de la aproximacion"},"Ajuste App",[0.5]);
     if(or(isempty(datosAproximacion{1}), isempty(datosAproximacion{2}), isempty(datosAproximacion{3})))
@@ -170,44 +180,51 @@ function esOK = interfazAjuste()
       listY = str2num(datosAproximacion{2});
       decimales = str2num(datosAproximacion{3});
       esOK = 1;
-      eligioBien = 0;
-      while(eligioBien == 0)
-      %Me falta manejar el error
-      seleccionMenuOpcionesMostrar = inputdlg({"Elija opcion de ajuste:\n\n-1-Recta de minimos cuadrados\n\n-2-Parabola de minimos cuadrados\n\n-3-Aproximacion Exponencial\n\n-4- Aproximacion Potencial\n\n-5-Aproximacion Hiperbola\n\n"},"Ajuste App", [0.5]);
-          switch(str2num(seleccionMenuOpcionesMostrar{1}))
-               case(1)%Aproximacion Lineal 
-                 [Solucion]= aproximacionLineal(listX,listY);
-                 msgbox(cstrcat("La funcion es:\n","y = ",num2str(Solucion(1,1))," x+ ", num2str(Solucion(2,1))),"Ajuste App");
-                 eligioBien = 1;
-              case(2)
-                   [Solucion]= aproximacionParabola(listX,listY);
-                   msgbox(cstrcat("La funcion es:\n","y = ",num2str(Solucion(1,1))," x^2+ ",num2str(Solucion(2,1))," x ",num2str(Solucion(3,1))),"Ajuste App");
-                   eligioBien = 1;
-              case(3)                   
-                 [Solucion]=aproximacionExponencial(listX,listY);
-                 msgbox(cstrcat("La funcion es:\n","y = ",num2str(Solucion(2,1))," e ^ ",num2str(Solucion(1,1)))," x ","Ajuste App");
-                  eligioBien = 1;
-              case(4)
-                  [Solucion] = aproximacionPotencial(listX,listY);
-                  msgbox(cstrcat("La funcion es:\n","y = ",num2str(Solucion(2,1))," x ^ ",num2str(Solucion(1,1))),"Ajuste App");
-                  eligioBien = 1;
-              case(5)
-                  [Solucion]=aproximacionHiperbolica(listX,listY);
-                  msgbox(cstrcat("La funcion es:\n","y = ",num2str(Solucion(2,1))," x ^ ",num2str(Solucion(1,1))),"Ajuste App");
-                  eligioBien = 1;
-              otherwise
-                 errordlg("Error al elegir el tipo de aproximacion, por favor vuelca a intentarlo");
-            endswitch
-        endwhile
-     endif 
+      [tipoFuncion, flagFuncion] = mostrarMenuFuncionesAproximantes();
+      if(flagFuncion == 1)
+        bandera = 1;
+        while(bandera == 1)
+          [caracteristica, bandera] = mostrarMenuSeleccionFuncionalidad();
+           switch(caracteristica)
+             case(1)
+               mostrarFuncionAproximante(tipoFuncion, listX, listY);
+             case(2)
+               mostrarDetalleDeCalculo(tipoFuncion, listX, listY);
+             case(3)
+               graficar(tipoFuncion, listX, listY);
+           endswitch
+          endwhile
+      endif
+     endif
 endfunction
 
+function mostrarDetalleDeCalculo(tipoFuncion, listX, listY)
+  
+endfunction
 
+function graficar(tipoFuncion, listX, listY)
+  
+endfunction
 
-
-
-
-
+function mostrarFuncionAproximante(tipoFuncion, listX, listY)
+  switch(tipoFuncion)
+    case(1)
+      [Solucion]= aproximacionLineal(listX,listY);
+      msgbox(cstrcat("La funcion es:\n","y = ",num2str(Solucion(1,1))," x+ ", num2str(Solucion(2,1))),"none");
+    case(2)
+      [Solucion]= aproximacionParabola(listX,listY);
+      msgbox(cstrcat("La funcion es:\n","y = ",num2str(Solucion(1,1))," x^2+ ",num2str(Solucion(2,1))," x ",num2str(Solucion(3,1))),"none");
+    case(3)
+       [Solucion]=aproximacionExponencial(listX,listY);
+       msgbox(cstrcat("La funcion es:\n","y = ",num2str(Solucion(2,1))," e ^ ",num2str(Solucion(1,1)))," x ","none");
+    case(4)
+      [Solucion] = aproximacionPotencial(listX,listY);
+      msgbox(cstrcat("La funcion es:\n","y = ",num2str(Solucion(2,1))," x ^ ",num2str(Solucion(1,1))),"none");
+    case(5)
+      [Solucion]=aproximacionHiperbolica(listX,listY);
+      msgbox(cstrcat("La funcion es:\n","y = ",num2str(Solucion(2,1))," x ^ ",num2str(Solucion(1,1))),"none");
+  endswitch
+endfunction
 
 
 
