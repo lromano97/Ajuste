@@ -13,9 +13,9 @@ Trabajo Practico de Matematica Superior - Ajuste
 - [X] Aproximacion Parabola
 - [X] Aproximacion Exponencial
 - [X] Aproximacion Lineal
-- [ ] Aproximacion por Minimos Cuadrados
+- [X] Aproximacion Potencial
 - [ ] Interfaz grafica
 - [ ] Grafica
 - [ ] Imprimir el paso a paso de los calculos de matriz
-- [ ] Funcion aproximante
+- [X] Funcion aproximante
 - [ ] Comparar Aproximaciones
