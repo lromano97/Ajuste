@@ -5,7 +5,7 @@ Trabajo Practico de Matematica Superior - Ajuste
  German Caceres ()<br />
  Gustavo Ayrton Bitocchi (155.468-2)<br />
  Lucas Ezequiel Romano (155.467-0)<br />
- Juliana Rossi ()<br />
+ Juliana Rossi (156.296-4)<br />
  Ivan Schecherer () *Como las bujias*<br />
 
 ## To Do:

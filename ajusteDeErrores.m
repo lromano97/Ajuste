@@ -96,7 +96,7 @@ function [funcion] = aproximacionHiperbolica(listX, listY)
   Solucion(1,1) = Solucion(1,1)*(Solucion(2,1).**(-1));
   Solucion(2,1) = Solucion(2,1).**(-1);
     
-    funcion = @(x)Solucion(2,1)*(x+Solucion(1,1))^(-1);
+    funcion = @(x)Solucion(1,1)*((x+Solucion(2,1)).^(-1));
    
 endfunction
 
