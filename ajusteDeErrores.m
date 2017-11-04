@@ -196,7 +196,7 @@ function esOK = interfazAjuste()
                   msgbox(cstrcat("La funcion es:\n","y = ",num2str(Solucion(2,1))," x ^ ",num2str(Solucion(1,1))),"Ajuste App");
                   eligioBien = 1;
               otherwise
-                 errordlg("Error al elegir el tipo de aproximacion, por favor vuelca a intentarlo"
+                 errordlg("Error al elegir el tipo de aproximacion, por favor vuelca a intentarlo");
             endswitch
         endwhile
      endif 
