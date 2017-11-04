@@ -28,6 +28,7 @@ function [funcion] = aproximacionPotencial(listX, listY)
   Solucion(sizeMatrix2(1,1),1) = exp(Solucion(sizeMatrix2(1,1),1));
   
   funcion = @(x)Solucion(2,1)*x.^(Solucion(1,1));
+  
 endfunction
 
 function [funcion] = aproximacionExponencial(listX,listY)
@@ -160,6 +161,7 @@ function ploteoPuntos(listX,listY,funcion)
   fplot(funcion,[a b]);
   xlabel('x');
   ylabel('y');
+  legend('Puntos', 'Curva representativa');
   uiwait;
 endfunction
 
@@ -213,7 +215,6 @@ function esOK = interfazAjuste()
 endfunction
 
 function mostrarDetalleDeCalculo(tipoFuncion, listX, listY)
-  
 endfunction
 
 function graficar(tipoFuncion, listX, listY)
@@ -223,7 +224,9 @@ endfunction
 
 function mostrarFuncionAproximante(tipoFuncion, listX, listY)
   [funcion]= obtenerFuncion(tipoFuncion,listX,listY);
-  msgbox(cstrcat("La funcion es: \n\n",disp(funcion)));
+  syms x
+  g = symfun(funcion,x);
+  msgbox(cstrcat("La funcion es: \n\n",disp(g),"\n\n"));
 endfunction
 
 function [funcion] = obtenerFuncion(tipoFuncion,listX,listY)
@@ -234,7 +237,6 @@ function [funcion] = obtenerFuncion(tipoFuncion,listX,listY)
       [funcion]= aproximacionParabola(listX,listY);
     case(3)
        [funcion]=aproximacionExponencial(listX,listY);
-
     case(4)
       [funcion] = aproximacionPotencial(listX,listY);
     case(5)
