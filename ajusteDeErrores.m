@@ -1,11 +1,8 @@
 %--Carga de packages
-
-
-
 function main
-
   interfazPrincipal()
 endfunction
+
 %Auxiliares
 function [Solucion] = aproximacionPotencial(listX, listY)
   cantFilas = size(listX)
@@ -30,6 +27,29 @@ function [Solucion] = aproximacionPotencial(listX, listY)
   sizeMatrix2 = size(Matrix2);
   Solucion(sizeMatrix2(1,1),1) = exp(Solucion(sizeMatrix2(1,1),1));
 endfunction
+
+function [solucion] = aproximacionExponencial(listX,listY)
+  cantFilas = size(listX);
+  matrizAproximacion = zeros(cantFilas(1,2)+1,5);
+  for i=1:cantFilas(1,2)
+    matrizAproximacion(i,1) = listX(1,i);
+    matrizAproximacion(i,2) = listY(1,i);
+    matrizAproximacion(i,3) = listX(1,i).**2;
+    matrizAproximacion(i,4) = reallog(listY(1,i));
+    matrizAproximacion(i,5) = listX(1,i)*reallog(listY(1,i));
+  endfor
+  matrizAproximacion(cantFilas(1,2)+1,1) = sum(matrizAproximacion(:,1));
+  matrizAproximacion(cantFilas(1,2)+1,2) = sum(matrizAproximacion(:,2));
+  matrizAproximacion(cantFilas(1,2)+1,3) = sum(matrizAproximacion(:,3));
+  matrizAproximacion(cantFilas(1,2)+1,4) = sum(matrizAproximacion(:,4));
+  matrizAproximacion(cantFilas(1,2)+1,5) = sum(matrizAproximacion(:,5));
+  
+  Matrix1 = [matrizAproximacion(cantFilas(1,2)+1,3), matrizAproximacion(cantFilas(1,2)+1,1);matrizAproximacion(cantFilas(1,2)+1,1), cantFilas(1,2)];
+  Matrix2 = [matrizAproximacion(cantFilas(1,2)+1,5); matrizAproximacion(cantFilas(1,2)+1,4)] ;
+  
+  Solucion = Matrix1\Matrix2;
+  Solucion(2,1) = exp(Solucion(2,1));
+endfunction 
 
 function [Solucion] = aproximacionLineal(listX, listY)
   cantFilas = size(listX);
@@ -163,16 +183,16 @@ function esOK = interfazAjuste()
                    [Solucion]= aproximacionParabola(listX,listY);
                    msgbox(cstrcat("La funcion es:\n","y = ",num2str(Solucion(1,1))," x^2+ ",num2str(Solucion(2,1))," x ",num2str(Solucion(3,1))),"Ajuste App");
                    eligioBien = 1;
-              case(3)
-                   msgbox("Coming Soon!");
-                   eligioBien = 1;
-                 %aproximacionExponencial(listX,listY);
+              case(3)                   
+                 [Solucion]=aproximacionExponencial(listX,listY);
+                 msgbox(cstrcat("La funcion es:\n","y = ",num2str(Solucion(2,1))," e ^ ",num2str(Solucion(1,1)))," x ","Ajuste App");
+                  eligioBien = 1;
               case(4)
                   [Solucion] = aproximacionPotencial(listX,listY);
                   msgbox(cstrcat("La funcion es:\n","y = ",num2str(Solucion(2,1))," x ^ ",num2str(Solucion(1,1))),"Ajuste App");
                   eligioBien = 1;
               case(5)
-                  aproximacionHiperbolica(listX,listY);
+                  [Solucion]=aproximacionHiperbolica(listX,listY);
                   msgbox(cstrcat("La funcion es:\n","y = ",num2str(Solucion(2,1))," x ^ ",num2str(Solucion(1,1))),"Ajuste App");
                   eligioBien = 1;
               otherwise
