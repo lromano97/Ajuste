@@ -19,3 +19,4 @@ Trabajo Practico de Matematica Superior - Ajuste
 - [ ] Imprimir el paso a paso de los calculos de matriz
 - [X] Funcion aproximante
 - [ ] Comparar Aproximaciones
+- [ ] Implementar los decimales
