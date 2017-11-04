@@ -14,7 +14,7 @@ Trabajo Practico de Matematica Superior - Ajuste
 - [X] Aproximacion Exponencial
 - [X] Aproximacion Lineal
 - [X] Aproximacion Potencial
-- [ ] Interfaz grafica
+- [X] Interfaz grafica
 - [ ] Grafica
 - [ ] Imprimir el paso a paso de los calculos de matriz
 - [X] Funcion aproximante
