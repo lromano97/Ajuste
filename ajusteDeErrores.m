@@ -216,8 +216,8 @@ function graficar(tipoFuncion, listX, listY, cantidadDecimales)
   ploteoPuntos(listX,listY,funcion);
 endfunction
 
-function mostrarFuncionAproximante(tipoFuncion, listX, listY)
-  [funcion]= obtenerFuncion(tipoFuncion,listX,listY);
+function mostrarFuncionAproximante(tipoFuncion, listX, listY, decimales)
+  [funcion]= obtenerFuncion(tipoFuncion,listX,listY, decimales);
   syms x
   g = symfun(funcion,x);
   msgbox(cstrcat("La funcion es: \n\n",disp(g),"\n\n"));
