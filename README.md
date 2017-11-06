@@ -15,8 +15,9 @@ Trabajo Practico de Matematica Superior - Ajuste
 - [X] Aproximacion Lineal
 - [X] Aproximacion Potencial
 - [X] Interfaz grafica
-- [ ] Grafica
-- [ ] Imprimir el paso a paso de los calculos de matriz
+- [X] Grafica
+- [ ] Revisar grafica de hiperbolica
+- [X] Imprimir el paso a paso de los calculos de matriz
 - [X] Funcion aproximante
 - [ ] Comparar Aproximaciones
-- [ ] Implementar los decimales
+- [X] Implementar los decimales
