@@ -1,5 +1,5 @@
 # Ajuste
-Trabajo Practico de Matematica Superior - Ajuste
+Trabajo Practico de Matematica Superior
 
 ## Integrantes
  German Caceres ()<br />
