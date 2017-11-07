@@ -105,26 +105,34 @@ function interfazPrincipal()
    pkg load symbolic
    ok=0;
    while(ok == 0)
-     seleccionMenuOpciones = inputdlg({"Elija la accion que desee realizar:\n\n1- Aproximar\n\n2- Comparar aproximaciones\n\n3- Finalizar\n\n"},"AMIC", [0.5]);
-     cargoOk=0
-     switch(str2num(seleccionMenuOpciones{1}))
-       case(1)%Aproximacion Lineal
-         while(cargoOk == 0)
-           cargoOk = interfazAjuste()
-         endwhile
-       case(2)
-           interfazComparaciones() 
-       case(3)
-           respuesta = questdlg("Esta seguro que desea salir de AMIC?", "AMIC", "Si", "No", "No");
-           if(strcmp(respuesta, "Si"))
-            msgbox("Gracias por utilizar AMIC", "AMIC", "none");
-            ok = 1;
-            return;
+    Funcionalidades = {"Aproximar", "Comparar aproximaciones", "Finalizar"};
+    [Funcionalidad, flag] = listdlg("ListString", Funcionalidades, "PromptString", "Seleccione la funcionalidad:", "Name", "Menu Funcion", "ListSize", [290 140], "SelectionMode", "Single", "OKString", "Ok", "CancelString", "Cancelar");
+      if(flag == 1)
+       cargoOk=0
+       switch(Funcionalidad)
+         case(1)%Aproximacion Lineal
+           while(cargoOk == 0)
+             cargoOk = interfazAjuste()
+           endwhile
+         case(2)
+             interfazComparaciones() 
+         case(3)
+             respuesta = questdlg("Esta seguro que desea salir de AMIC?", "AMIC", "Si", "No", "No");
+             if(strcmp(respuesta, "Si"))
+              msgbox("Gracias por utilizar AMIC", "AMIC", "none");
+              ok = 1;
+              return;
            endif
-       otherwise
-            errordlg("La opcion requerida es incorrecta, por favor vuelvalo a intentar", "Error de peticion");
-    endswitch
-  endwhile
+        endswitch
+       else
+        respuesta = questdlg("Esta seguro que desea salir de AMIC?", "AMIC", "Si", "No", "No");
+        if(strcmp(respuesta, "Si"))
+          msgbox("Gracias por utilizar AMIC", "AMIC", "none");
+          ok = 1;
+          return;
+        endif
+       endif
+     endwhile
 endfunction
 
 function ploteoPuntos(listX,listY,funcion)
@@ -285,6 +293,7 @@ function mostrarDetalleDeCalculo(tipoFuncion, listX, listY, cantidadDecimales)
       Matrix1 = [matrizAproximacion(cantFilas(1,2)+1,3), matrizAproximacion(cantFilas(1,2)+1,1);matrizAproximacion(cantFilas(1,2)+1,1), cantFilas(1,2)];
       Matrix2 = [matrizAproximacion(cantFilas(1,2)+1,4); matrizAproximacion(cantFilas(1,2)+1,2)] ;
       msgbox(disp(matrizAproximacion), "Detalle de calculos:\n\n", "none"); 
+      msgbox(cstrcat(mat2str(Matrix1(1,1)), "*a", "+ b*", mat2str(Matrix1(1,2)), " = ", mat2str(Matrix2(1,1)), "\n\n", mat2str(Matrix1(2,1)), "* a + ", mat2str(Matrix1(2,2)), " * b = ", mat2str(Matrix2(2,1))), "Sistema utilizado", "none");
     case(2)
       [matrizAproximacion] = aproximacionParabola(listX, listY, cantidadDecimales);
       Matrix1 = [matrizAproximacion(cantFilas(1,2)+1,3), matrizAproximacion(cantFilas(1,2)+1,4), matrizAproximacion(cantFilas(1,2)+1,5);matrizAproximacion(cantFilas(1,2)+1,1), matrizAproximacion(cantFilas(1,2)+1,3), matrizAproximacion(cantFilas(1,2)+1,4);cantFilas(1,2), matrizAproximacion(cantFilas(1,2)+1,1), matrizAproximacion(cantFilas(1,2)+1,3)];
@@ -295,11 +304,13 @@ function mostrarDetalleDeCalculo(tipoFuncion, listX, listY, cantidadDecimales)
       Matrix1 = [matrizAproximacion(cantFilas(1,2)+1,4), matrizAproximacion(cantFilas(1,2)+1,3) ; matrizAproximacion(cantFilas(1,2)+1,3), cantFilas(1,2)]
       Matrix2 = [matrizAproximacion(cantFilas(1,2)+1,6); matrizAproximacion(cantFilas(1,2)+1,5)];
       msgbox(disp(matrizAproximacion), "Detalle de calculos:\n\n", "none"); 
+      msbox(cstrcat(mat2str(Matrix1(1,1)), " * a + ", mat2str(Matrix1(1,2)), " * B = ", mat2str(Matrix2(1,1)), "\n\n", mat2str(Matrix1(2,1)), " * a + ", mat2str(Matrix1(2,2)), " * B = ", mat2str(Matrix2(2,1))), "Sistema utilizado" , "none"); 
     case(4)
       [matrizAproximacion] = aproximacionExponencial(listX, listY, cantidadDecimales);
       Matrix1 = [matrizAproximacion(cantFilas(1,2)+1,3), matrizAproximacion(cantFilas(1,2)+1,1);matrizAproximacion(cantFilas(1,2)+1,1), cantFilas(1,2)];
       Matrix2 = [matrizAproximacion(cantFilas(1,2)+1,5); matrizAproximacion(cantFilas(1,2)+1,4)] ;
       msgbox(disp(matrizAproximacion), "Detalle de calculos:\n\n", "none"); 
+      msbox(cstrcat(mat2str(Matrix1(1,1)), " * a + ", mat2str(Matrix1(1,2)), " * B = ", mat2str(Matrix2(1,1)), "\n\n", mat2str(Matrix1(2,1)), " * a + ", mat2str(Matrix1(2,2)), " * B = ", mat2str(Matrix2(2,1))), "Sistema utilizado" , "none");
     case(5)
       [matrizAproximacion] = aproximacionHiperbolica(listX, listY, cantidadDecimales);
       Matrix1 = [cantFilas(1,2),matrizAproximacion(cantFilas(1,2)+1,1);matrizAproximacion(cantFilas(1,2)+1,1),matrizAproximacion(cantFilas(1,2)+1,3)];
