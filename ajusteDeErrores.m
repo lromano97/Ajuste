@@ -282,18 +282,28 @@ function mostrarDetalleDeCalculo(tipoFuncion, listX, listY, cantidadDecimales)
   switch(tipoFuncion)
     case(1)
       [matrizAproximacion] = aproximacionLineal(listX, listY, cantidadDecimales);
+      Matrix1 = [matrizAproximacion(cantFilas(1,2)+1,3), matrizAproximacion(cantFilas(1,2)+1,1);matrizAproximacion(cantFilas(1,2)+1,1), cantFilas(1,2)];
+      Matrix2 = [matrizAproximacion(cantFilas(1,2)+1,4); matrizAproximacion(cantFilas(1,2)+1,2)] ;
       msgbox(disp(matrizAproximacion), "Detalle de calculos:\n\n", "none"); 
     case(2)
       [matrizAproximacion] = aproximacionParabola(listX, listY, cantidadDecimales);
+      Matrix1 = [matrizAproximacion(cantFilas(1,2)+1,3), matrizAproximacion(cantFilas(1,2)+1,4), matrizAproximacion(cantFilas(1,2)+1,5);matrizAproximacion(cantFilas(1,2)+1,1), matrizAproximacion(cantFilas(1,2)+1,3), matrizAproximacion(cantFilas(1,2)+1,4);cantFilas(1,2), matrizAproximacion(cantFilas(1,2)+1,1), matrizAproximacion(cantFilas(1,2)+1,3)];
+      Matrix2 = [matrizAproximacion(cantFilas(1,2)+1,7); matrizAproximacion(cantFilas(1,2)+1,6);matrizAproximacion(cantFilas(1,2)+1,2)];
       msgbox(disp(matrizAproximacion), "Detalle de calculos:\n\n", "none"); 
     case(3)
       [matrizAproximacion] = aproximacionPotencial(listX, listY, cantidadDecimales);
+      Matrix1 = [matrizAproximacion(cantFilas(1,2)+1,4), matrizAproximacion(cantFilas(1,2)+1,3) ; matrizAproximacion(cantFilas(1,2)+1,3), cantFilas(1,2)]
+      Matrix2 = [matrizAproximacion(cantFilas(1,2)+1,6); matrizAproximacion(cantFilas(1,2)+1,5)];
       msgbox(disp(matrizAproximacion), "Detalle de calculos:\n\n", "none"); 
     case(4)
       [matrizAproximacion] = aproximacionExponencial(listX, listY, cantidadDecimales);
+      Matrix1 = [matrizAproximacion(cantFilas(1,2)+1,3), matrizAproximacion(cantFilas(1,2)+1,1);matrizAproximacion(cantFilas(1,2)+1,1), cantFilas(1,2)];
+      Matrix2 = [matrizAproximacion(cantFilas(1,2)+1,5); matrizAproximacion(cantFilas(1,2)+1,4)] ;
       msgbox(disp(matrizAproximacion), "Detalle de calculos:\n\n", "none"); 
     case(5)
       [matrizAproximacion] = aproximacionHiperbolica(listX, listY, cantidadDecimales);
+      Matrix1 = [cantFilas(1,2),matrizAproximacion(cantFilas(1,2)+1,1);matrizAproximacion(cantFilas(1,2)+1,1),matrizAproximacion(cantFilas(1,2)+1,3)];
+      Matrix2 = [matrizAproximacion(cantFilas(1,2)+1,2);matrizAproximacion(cantFilas(1,2)+1,4)];
       msgbox(disp(matrizAproximacion), "Detalle de calculos:\n\n", "none"); 
   endswitch
 endfunction
