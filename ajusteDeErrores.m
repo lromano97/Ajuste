@@ -142,6 +142,93 @@ function ploteoPuntos(listX,listY,funcion)
 endfunction
 
 function interfazComparaciones()
+  datosAproximacion = inputdlg({"Ingrese la lista de valores para X","Ingrese la lista de valores de Y", "Ingrese la cantidad de decimales de la aproximacion"},"Ajuste App",[0.5]);
+  if(or(isempty(datosAproximacion{1}), isempty(datosAproximacion{2}), isempty(datosAproximacion{3})))
+      errordlg("Ha ingresado incorrectamente los datos para generar la aproximacion", "Error al procesar");
+      esOK = 0;
+    else
+      listX = str2num(datosAproximacion{1});
+      listY = str2num(datosAproximacion{2});
+      decimales = str2num(datosAproximacion{3});
+      cantFilas = size(listX);
+      listaDeOpciones = {"Recta de minimos cuadrados", "Parabola de minimos cuadrados", "Aproximacion Potencial", "Aproximacion Exponencial", "Aproximacion Hiperbolica"};
+      [Eleccion,ok] = listdlg ("ListString", listaDeOpciones,"SelectionMode", "Multiple");   
+      if (ok == 1)
+        for i = 1:numel (Eleccion)
+        switch(Eleccion(i))
+        case(1)
+          [matrizAproximacion] = aproximacionLineal(listX, listY, decimales);
+          Matrix1 = [matrizAproximacion(cantFilas(1,2)+1,3), matrizAproximacion(cantFilas(1,2)+1,1);matrizAproximacion(cantFilas(1,2)+1,1), cantFilas(1,2)];
+          Matrix2 = [matrizAproximacion(cantFilas(1,2)+1,4); matrizAproximacion(cantFilas(1,2)+1,2)] ;
+          Solucion = Matrix1\Matrix2;
+          Solucion(1,1) = redondear(Solucion(1,1),decimales);
+          Solucion(2,1) = redondear(Solucion(2,1),decimales);
+          a = Solucion(1,1);
+          b = Solucion(2,1);
+          Error(i,1) = zeros(1);
+          for j = 1:cantFilas(1,2) 
+          Error(i,1) += ((listY(:,j)-(listX(:,j)*a+b)).**2);
+          endfor
+        case(2)
+          [matrizAproximacion] = aproximacionParabola(listX, listY, decimales);
+          Matrix1 = [matrizAproximacion(cantFilas(1,2)+1,3), matrizAproximacion(cantFilas(1,2)+1,4), matrizAproximacion(cantFilas(1,2)+1,5);matrizAproximacion(cantFilas(1,2)+1,1), matrizAproximacion(cantFilas(1,2)+1,3), matrizAproximacion(cantFilas(1,2)+1,4);cantFilas(1,2), matrizAproximacion(cantFilas(1,2)+1,1), matrizAproximacion(cantFilas(1,2)+1,3)];
+          Matrix2 = [matrizAproximacion(cantFilas(1,2)+1,7); matrizAproximacion(cantFilas(1,2)+1,6);matrizAproximacion(cantFilas(1,2)+1,2)];
+          Solucion = Matrix1\Matrix2;
+          Solucion(1,1) = redondear(Solucion(1,1),decimales);
+          Solucion(2,1) = redondear(Solucion(2,1),decimales);
+          a = Solucion(1,1);
+          b = Solucion(2,1);
+          c = Solucion(3,1);
+          Error(i,1) = zeros(1);
+          for j = 1:cantFilas(1,2)
+           Error(i,1) += (listY(:,j)-(((listX(:,j).**2)*a)+((listX(:,j))*b)+c)).**2;
+          endfor
+        case(3)
+          [matrizAproximacion] = aproximacionPotencial(listX, listY, decimales);
+          Matrix1 = [matrizAproximacion(cantFilas(1,2)+1,4), matrizAproximacion(cantFilas(1,2)+1,3) ; matrizAproximacion(cantFilas(1,2)+1,3), cantFilas(1,2)]
+          Matrix2 = [matrizAproximacion(cantFilas(1,2)+1,6); matrizAproximacion(cantFilas(1,2)+1,5)];
+          Solucion = Matrix1\Matrix2;
+          sizeMatrix2 = size(Matrix2);
+          Solucion(1,1) = redondear(Solucion(1,1),decimales);
+          Solucion(sizeMatrix2(1,1),1) = redondear(exp(Solucion(sizeMatrix2(1,1),1)),decimales);
+          Solucion(2,1) = redondear(Solucion(2,1),decimales);
+          a = Solucion(2,1);
+          b = Solucion(1,1);
+          Error(i,1) = zeros(1);
+          for j = 1:cantFilas(1,2)
+            Error(i,1) += (listY(:,j)-(a*(listX(:,j).**b))).**2;
+          endfor
+         case(4)
+          [matrizAproximacion] = aproximacionExponencial(listX, listY, decimales);
+          Matrix1 = [matrizAproximacion(cantFilas(1,2)+1,3), matrizAproximacion(cantFilas(1,2)+1,1);matrizAproximacion(cantFilas(1,2)+1,1), cantFilas(1,2)];
+          Matrix2 = [matrizAproximacion(cantFilas(1,2)+1,5); matrizAproximacion(cantFilas(1,2)+1,4)] ;
+          Solucion = Matrix1\Matrix2;
+          Solucion(1,1) = redondear(Solucion(1,1),decimales);
+          Solucion(2,1) = redondear(exp(Solucion(2,1)),decimales);
+          a = Solucion(1,1);
+          b = Solucion(2,1);
+          Error(i,1) = zeros(1);
+          for j = 1:cantFilas(1,2)
+            Error(i,1) += (listY(:,j)-(b*(e.**(a*listX(:,j))))).**2; 
+          endfor
+          case(5)
+          [matrizAproximacion] = aproximacionHiperbolica(listX, listY, decimales);
+          Matrix1 = [cantFilas(1,2),matrizAproximacion(cantFilas(1,2)+1,1);matrizAproximacion(cantFilas(1,2)+1,1),matrizAproximacion(cantFilas(1,2)+1,3)];
+          Matrix2 = [matrizAproximacion(cantFilas(1,2)+1,2);matrizAproximacion(cantFilas(1,2)+1,4)];
+          Solucion = Matrix1\Matrix2;
+          Solucion(1,1) = redondear(Solucion(1,1)*(Solucion(2,1).**(-1)),decimales);
+          Solucion(2,1) = redondear(Solucion(2,1).**(-1),decimales);
+          a = Solucion(1,1);
+          b = Solucion(2,1);
+          Error(i,1) = zeros(1);
+          for j = 1:cantFilas(1,2)
+            Error(i,1) += (listY(:,j)-(b*((listX(:,j)+a).**(-1)))).**2; 
+          endfor
+          endswitch
+        endfor
+        disp(Error);
+      endif
+   endif
   endfunction
 
 function [x] = valores(parametro)
