@@ -6,7 +6,7 @@ Trabajo Practico de Matematica Superior
  Gustavo Ayrton Bitocchi (155.468-2)<br />
  Lucas Ezequiel Romano (155.467-0)<br />
  Juliana Rossi (156.296-4)<br />
- Ivan Schecherer () *Como las bujias*<br />
+ Ivan Scherer (155.537-6) <br />
 
 ## To Do:
 - [X] Aproximacion Hiperbolica
