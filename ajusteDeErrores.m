@@ -299,6 +299,7 @@ function mostrarDetalleDeCalculo(tipoFuncion, listX, listY, cantidadDecimales)
       Matrix1 = [matrizAproximacion(cantFilas(1,2)+1,3), matrizAproximacion(cantFilas(1,2)+1,4), matrizAproximacion(cantFilas(1,2)+1,5);matrizAproximacion(cantFilas(1,2)+1,1), matrizAproximacion(cantFilas(1,2)+1,3), matrizAproximacion(cantFilas(1,2)+1,4);cantFilas(1,2), matrizAproximacion(cantFilas(1,2)+1,1), matrizAproximacion(cantFilas(1,2)+1,3)];
       Matrix2 = [matrizAproximacion(cantFilas(1,2)+1,7); matrizAproximacion(cantFilas(1,2)+1,6);matrizAproximacion(cantFilas(1,2)+1,2)];
       msgbox(disp(matrizAproximacion), "Detalle de calculos:\n\n", "none"); 
+      msgbox(cstrcat(mat2str(Matrix1(1,1)), " * a + ", mat2str(Matrix1(1,2)), " * B = ", mat2str(Matrix2(1,1)), "\n\n", mat2str(Matrix1(2,1)), " * a + ", mat2str(Matrix1(2,2)), " * B = ", mat2str(Matrix2(2,1))), "Sistema utilizado" , "none"); 
     case(3)
       [matrizAproximacion] = aproximacionPotencial(listX, listY, cantidadDecimales);
       Matrix1 = [matrizAproximacion(cantFilas(1,2)+1,4), matrizAproximacion(cantFilas(1,2)+1,3) ; matrizAproximacion(cantFilas(1,2)+1,3), cantFilas(1,2)]
@@ -316,6 +317,7 @@ function mostrarDetalleDeCalculo(tipoFuncion, listX, listY, cantidadDecimales)
       Matrix1 = [cantFilas(1,2),matrizAproximacion(cantFilas(1,2)+1,1);matrizAproximacion(cantFilas(1,2)+1,1),matrizAproximacion(cantFilas(1,2)+1,3)];
       Matrix2 = [matrizAproximacion(cantFilas(1,2)+1,2);matrizAproximacion(cantFilas(1,2)+1,4)];
       msgbox(disp(matrizAproximacion), "Detalle de calculos:\n\n", "none"); 
+      msbox(cstrcat(mat2str(Matrix1(1,1)), " * a + ", mat2str(Matrix1(1,2)), " * B = ", mat2str(Matrix2(1,1)), "\n\n", mat2str(Matrix1(2,1)), " * a + ", mat2str(Matrix1(2,2)), " * B = ", mat2str(Matrix2(2,1))), "Sistema utilizado" , "none"); 
   endswitch
 endfunction
 
