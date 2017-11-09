@@ -149,6 +149,40 @@ function ploteoPuntos(listX,listY,funcion)
   uiwait;
 endfunction
 
+function [Error] = cargarValoresXeY(cantidadElecciones,listX,listY)
+  cantFilas = size(listX);
+  Error = zeros(cantFilas(1,2),3+cantidadElecciones+cantidadElecciones);
+  for i = 1:cantFilas(1,2)
+    Error(i,1) = i;
+    Error(i,2) = listX(1,i);
+    Error(i,3) = listY(1,i);
+    endfor
+  endfunction
+  
+function errorMinimo(compararErrores)
+  cantidadAproxs = size(compararErrores);
+  j = 1;
+  for i = 1:cantidadAproxs(1,2)
+    if(compararErrores(1,i)!=0)
+    matrizMinima(1,j) = compararErrores(1,i);
+    j = j+1;
+    endif
+    endfor
+  valorMinimo = min(matrizMinima);
+  switch(valorMinimo)
+  case(compararErrores(1,1))
+  msgbox(disp(valorMinimo), "La recta tiene menor error:\n\n", "none");
+   case(compararErrores(1,2))
+  msgbox(disp(valorMinimo), "La parabola tiene menor error:\n\n", "none");
+   case(compararErrores(1,3))
+  msgbox(disp(valorMinimo), "La potencial de minimos cuadrados tiene menor error:\n\n", "none");
+   case(compararErrores(1,4))
+  msgbox(disp(valorMinimo), "La exponencial tiene menor error:\n\n", "none");
+   case(compararErrores(1,5))
+  msgbox(disp(valorMinimo), "La hiperbolica tiene menor error:\n\n", "none");
+  endswitch
+endfunction
+
 function interfazComparaciones()
   datosAproximacion = inputdlg({"Ingrese la lista de valores para X","Ingrese la lista de valores de Y", "Ingrese la cantidad de decimales de la aproximacion"},"Ajuste App",[0.5]);
   if(or(isempty(datosAproximacion{1}), isempty(datosAproximacion{2}), isempty(datosAproximacion{3})))
@@ -160,9 +194,12 @@ function interfazComparaciones()
       decimales = str2num(datosAproximacion{3});
       cantFilas = size(listX);
       listaDeOpciones = {"Recta de minimos cuadrados", "Parabola de minimos cuadrados", "Aproximacion Potencial", "Aproximacion Exponencial", "Aproximacion Hiperbolica"};
-      [Eleccion,ok] = listdlg ("ListString", listaDeOpciones,"SelectionMode", "Multiple");   
+      [Eleccion,ok] = listdlg ("ListString", listaDeOpciones,"SelectionMode", "Multiple"); 
+      cantidadElecciones = numel(Eleccion);
+      [Error] = cargarValoresXeY(cantidadElecciones,listX,listY);
+      compararErrores = zeros(1,5);
       if (ok == 1)
-        for i = 1:numel (Eleccion)
+        for i = 1:cantidadElecciones
         switch(Eleccion(i))
         case(1)
           [matrizAproximacion] = aproximacionLineal(listX, listY, decimales);
@@ -173,9 +210,9 @@ function interfazComparaciones()
           Solucion(2,1) = redondear(Solucion(2,1),decimales);
           a = Solucion(1,1);
           b = Solucion(2,1);
-          Error(i,1) = zeros(1);
-          for j = 1:cantFilas(1,2) 
-          Error(i,1) += ((listY(:,j)-(listX(:,j)*a+b)).**2);
+          for j = 1:cantFilas(1,2)
+          Error(j,i+3+cantidadElecciones) = ((listY(:,j)-(listX(:,j)*a+b)).**2);
+          compararErrores(1,i) += ((listY(:,j)-(listX(:,j)*a+b)).**2);
           endfor
         case(2)
           [matrizAproximacion] = aproximacionParabola(listX, listY, decimales);
@@ -187,9 +224,9 @@ function interfazComparaciones()
           a = Solucion(1,1);
           b = Solucion(2,1);
           c = Solucion(3,1);
-          Error(i,1) = zeros(1);
           for j = 1:cantFilas(1,2)
-           Error(i,1) += (listY(:,j)-(((listX(:,j).**2)*a)+((listX(:,j))*b)+c)).**2;
+           Error(j,i+3+cantidadElecciones) = (listY(:,j)-(((listX(:,j).**2)*a)+((listX(:,j))*b)+c)).**2;
+           compararErrores(1,i) += (listY(:,j)-(((listX(:,j).**2)*a)+((listX(:,j))*b)+c)).**2;
           endfor
         case(3)
           [matrizAproximacion] = aproximacionPotencial(listX, listY, decimales);
@@ -202,9 +239,9 @@ function interfazComparaciones()
           Solucion(2,1) = redondear(Solucion(2,1),decimales);
           a = Solucion(2,1);
           b = Solucion(1,1);
-          Error(i,1) = zeros(1);
           for j = 1:cantFilas(1,2)
-            Error(i,1) += (listY(:,j)-(a*(listX(:,j).**b))).**2;
+            Error(j,i+3+cantidadElecciones) = (listY(:,j)-(a*(listX(:,j).**b))).**2;
+            compararErrores(1,i) += (listY(:,j)-(a*(listX(:,j).**b))).**2;
           endfor
          case(4)
           [matrizAproximacion] = aproximacionExponencial(listX, listY, decimales);
@@ -215,9 +252,9 @@ function interfazComparaciones()
           Solucion(2,1) = redondear(exp(Solucion(2,1)),decimales);
           a = Solucion(1,1);
           b = Solucion(2,1);
-          Error(i,1) = zeros(1);
           for j = 1:cantFilas(1,2)
-            Error(i,1) += (listY(:,j)-(b*(e.**(a*listX(:,j))))).**2; 
+            Error(j,i+3+cantidadElecciones) = (listY(:,j)-(b*(e.**(a*listX(:,j))))).**2; 
+            compararErrores(1,i) += (listY(:,j)-(b*(e.**(a*listX(:,j))))).**2; 
           endfor
           case(5)
           [matrizAproximacion] = aproximacionHiperbolica(listX, listY, decimales);
@@ -228,13 +265,14 @@ function interfazComparaciones()
           Solucion(2,1) = redondear(Solucion(2,1).**(-1),decimales);
           a = Solucion(1,1);
           b = Solucion(2,1);
-          Error(i,1) = zeros(1);
           for j = 1:cantFilas(1,2)
-            Error(i,1) += (listY(:,j)-(b*((listX(:,j)+a).**(-1)))).**2; 
+            Error(j,i+3+cantidadElecciones) = (listY(:,j)-(b*((listX(:,j)+a).**(-1)))).**2;
+            compararErrores(1,i) += (listY(:,j)-(b*((listX(:,j)+a).**(-1)))).**2;
           endfor
           endswitch
         endfor
-        disp(Error);
+        msgbox(disp(Error), "Comparacion de aproximaciones:\n\n", "none");
+       errorMinimo(compararErrores); 
       endif
    endif
   endfunction
