@@ -151,7 +151,7 @@ endfunction
 
 function [Error] = cargarValoresXeY(cantidadElecciones,listX,listY)
   cantFilas = size(listX);
-  Error = zeros(cantFilas(1,2),3+cantidadElecciones+cantidadElecciones);
+  Error = zeros(cantFilas(1,2),3+cantidadElecciones);
   for i = 1:cantFilas(1,2)
     Error(i,1) = i;
     Error(i,2) = listX(1,i);
@@ -171,15 +171,15 @@ function errorMinimo(compararErrores, decimales)
   valorMinimo = min(matrizMinima);
   switch(valorMinimo)
     case(compararErrores(1,1))
-      msgbox(cstrcat("La recta con: ", mat2str(redondear(valorMinimo, decimales))), "Menor error:\n\n" , "none");
+      msgbox(cstrcat("La del menor error es la recta con: ", mat2str(redondear(valorMinimo, decimales))), "Menor error \n\n" , "none");
     case(compararErrores(1,2))
-      msgbox(cstrcat("La parabola con: ", mat2str(redondear(valorMinimo, decimales))), "Menor error:\n\n" , "none");
+      msgbox(cstrcat("La del menor error es la parabola con: ", mat2str(redondear(valorMinimo, decimales))), "Menor error \n\n" , "none");
     case(compararErrores(1,3))
-      msgbox(cstrcat("La potencial con: ", mat2str(redondear(valorMinimo, decimales))), "Menor error:\n\n" , "none");
+      msgbox(cstrcat("La del menor error es la potencial con: ", mat2str(redondear(valorMinimo, decimales))), "Menor error \n\n" , "none");
     case(compararErrores(1,4))
-      msgbox(cstrcat("La exponencial con: ", mat2str(redondear(valorMinimo, decimales))), "Menor error:\n\n" , "none");
+      msgbox(cstrcat("La del menor error es la exponencial con: ", mat2str(redondear(valorMinimo, decimales))), "Menor error \n\n" , "none");
     case(compararErrores(1,5))
-      msgbox(cstrcat("La hiperbolica con: ", mat2str(redondear(valorMinimo, decimales))), "Menor error:\n\n" , "none");
+      msgbox(cstrcat("La del menor error es la hiperbolica con: ", mat2str(redondear(valorMinimo, decimales))), "Menor error \n\n" , "none");
   endswitch
 endfunction
 
@@ -202,7 +202,10 @@ function interfazComparaciones()
       listaDeOpciones = {"Recta de minimos cuadrados", "Parabola de minimos cuadrados", "Aproximacion Potencial", "Aproximacion Exponencial", "Aproximacion Hiperbolica"};
       [Eleccion,ok] = listdlg ("ListString", listaDeOpciones,"SelectionMode", "Multiple"); 
       cantidadElecciones = numel(Eleccion);
-      [Error] = cargarValoresXeY(cantidadElecciones,listX,listY);
+      %[Error] = cargarValoresXeY(cantidadElecciones,listX,listY);
+      
+      [Modelo] = cargarValoresXeY(cantidadElecciones,listX,listY);
+      
       compararErrores = inicializarMatrizValorNegativo();
       if (ok == 1)
         for i = 1:cantidadElecciones
@@ -218,8 +221,8 @@ function interfazComparaciones()
           b = Solucion(2,1);
           compararErrores(1,1) = 0;
           for j = 1:cantFilas(1,2)
-          Error(j,i+3) = redondear(listX(:,j)*a+b,decimales);
-          Error(j,i+3+cantidadElecciones) = redondear(((listY(:,j)-(listX(:,j)*a+b)).**2),decimales);
+          Modelo(j,i+3) = redondear(listX(:,j)*a+b,decimales);
+          Error(j,i) = redondear(((listY(:,j)-(listX(:,j)*a+b)).**2),decimales);
           compararErrores(1,1) += redondear(((listY(:,j)-(listX(:,j)*a+b)).**2),decimales);
           endfor
         case(2)
@@ -234,8 +237,8 @@ function interfazComparaciones()
           c = Solucion(3,1);
           compararErrores(1,2) = 0;
           for j = 1:cantFilas(1,2)
-           Error(j,i+3) = redondear((((listX(:,j).**2)*a)+((listX(:,j))*b)+c),decimales);
-           Error(j,i+3+cantidadElecciones) = redondear((listY(:,j)-(((listX(:,j).**2)*a)+((listX(:,j))*b)+c)).**2,decimales);
+           Modelo(j,i+3) = redondear((((listX(:,j).**2)*a)+((listX(:,j))*b)+c),decimales);
+           Error(j,i) = redondear((listY(:,j)-(((listX(:,j).**2)*a)+((listX(:,j))*b)+c)).**2,decimales);
            compararErrores(1,2) += redondear((listY(:,j)-(((listX(:,j).**2)*a)+((listX(:,j))*b)+c)).**2,decimales);
           endfor
         case(3)
@@ -251,8 +254,8 @@ function interfazComparaciones()
           b = Solucion(1,1);
           compararErrores(1,3) = 0;
           for j = 1:cantFilas(1,2)
-            Error(j,i+3) = redondear(a*((listX(:,j).**b)),decimales);
-            Error(j,i+3+cantidadElecciones) = redondear(((listY(:,j)-(a*(listX(:,j).**b))).**2),decimales);
+            Modelo(j,i+3) = redondear(a*((listX(:,j).**b)),decimales);
+            Error(j,i) = redondear(((listY(:,j)-(a*(listX(:,j).**b))).**2),decimales);
             compararErrores(1,3) += redondear(((listY(:,j)-(a*(listX(:,j).**b))).**2),decimales);
           endfor
          case(4)
@@ -266,8 +269,8 @@ function interfazComparaciones()
           b = Solucion(2,1);
           compararErrores(1,4) = 0;
           for j = 1:cantFilas(1,2)
-            Error(j,i+3) = redondear((b*(e.**(a*listX(:,j)))),decimales);
-            Error(j,i+3+cantidadElecciones) = redondear(((listY(:,j)-(b*(e.**(a*listX(:,j))))).**2),decimales); 
+            Modelo(j,i+3) = redondear((b*(e.**(a*listX(:,j)))),decimales);
+            Error(j,i) = redondear(((listY(:,j)-(b*(e.**(a*listX(:,j))))).**2),decimales); 
             compararErrores(1,4) += redondear(((listY(:,j)-(b*(e.**(a*listX(:,j))))).**2),decimales); 
           endfor
           case(5)
@@ -281,18 +284,21 @@ function interfazComparaciones()
           b = Solucion(2,1);
           compararErrores(1,5) = 0;
           for j = 1:cantFilas(1,2)
-            Error(j,i+3) = redondear((b*((listX(:,j)+a).**(-1))),decimales);
-            Error(j,i+3+cantidadElecciones) = redondear(((listY(:,j)-(b*((listX(:,j)+a).**(-1)))).**2),decimales);
-            compararErrores(1,5) += redondear(((listY(:,j)-(b*((listX(:,j)+a).**(-1)))).**2),redondear);
+            Modelo(j,i+3) = redondear((b*((listX(:,j)+a).**(-1))),decimales);
+            Error(j,i) = redondear(((listY(:,j)-(b*((listX(:,j)+a).**(-1)))).**2),decimales);
+            compararErrores(1,5) += redondear(((listY(:,j)-(b*((listX(:,j)+a).**(-1)))).**2),decimales);
           endfor
           endswitch
         endfor
-        msgbox(disp(Error), "Comparacion de aproximaciones:\n\n", "none");
+        msgbox(disp(Modelo),"Puntos y Modelo\n\n","none");
+        msgbox(disp(Error), "Error:\n\n", "none");
        errorMinimo(compararErrores, decimales); 
       endif
    endif
   endfunction
 
+
+   
 function [x] = valores(parametro)
   x = inputdlg({cstrcat("Ingrese una lista de valores para ",parametro)},"Ajuste App",[0.5]);
   while (isempty(str2num(x{1}))) 
