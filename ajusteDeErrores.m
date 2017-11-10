@@ -159,7 +159,7 @@ function [Error] = cargarValoresXeY(cantidadElecciones,listX,listY)
     endfor
   endfunction
   
-function errorMinimo(compararErrores)
+function errorMinimo(compararErrores, decimales)
   cantidadAproxs = size(compararErrores);
   j = 1;
   for i = 1:cantidadAproxs(1,2)
@@ -170,16 +170,16 @@ function errorMinimo(compararErrores)
     endfor
   valorMinimo = min(matrizMinima);
   switch(valorMinimo)
-  case(compararErrores(1,1))
-  msgbox(disp(valorMinimo), "La recta tiene menor error:\n\n", "none");
-   case(compararErrores(1,2))
-  msgbox(disp(valorMinimo), "La parabola tiene menor error:\n\n", "none");
-   case(compararErrores(1,3))
-  msgbox(disp(valorMinimo), "La potencial de minimos cuadrados tiene menor error:\n\n", "none");
-   case(compararErrores(1,4))
-  msgbox(disp(valorMinimo), "La exponencial tiene menor error:\n\n", "none");
-   case(compararErrores(1,5))
-  msgbox(disp(valorMinimo), "La hiperbolica tiene menor error:\n\n", "none");
+    case(compararErrores(1,1))
+      msgbox(cstrcat("La recta con: ", mat2str(redondear(valorMinimo, decimales))), "Menor error:\n\n" , "none");
+    case(compararErrores(1,2))
+      msgbox(cstrcat("La parabola con: ", mat2str(redondear(valorMinimo, decimales))), "Menor error:\n\n" , "none");
+    case(compararErrores(1,3))
+      msgbox(cstrcat("La potencial con: ", mat2str(redondear(valorMinimo, decimales))), "Menor error:\n\n" , "none");
+    case(compararErrores(1,4))
+      msgbox(cstrcat("La exponencial con: ", mat2str(redondear(valorMinimo, decimales))), "Menor error:\n\n" , "none");
+    case(compararErrores(1,5))
+      msgbox(cstrcat("La hiperbolica con: ", mat2str(redondear(valorMinimo, decimales))), "Menor error:\n\n" , "none");
   endswitch
 endfunction
 
@@ -212,7 +212,7 @@ function interfazComparaciones()
           b = Solucion(2,1);
           for j = 1:cantFilas(1,2)
           Error(j,i+3+cantidadElecciones) = ((listY(:,j)-(listX(:,j)*a+b)).**2);
-          compararErrores(1,i) += ((listY(:,j)-(listX(:,j)*a+b)).**2);
+          compararErrores(1,1) += ((listY(:,j)-(listX(:,j)*a+b)).**2);
           endfor
         case(2)
           [matrizAproximacion] = aproximacionParabola(listX, listY, decimales);
@@ -226,7 +226,7 @@ function interfazComparaciones()
           c = Solucion(3,1);
           for j = 1:cantFilas(1,2)
            Error(j,i+3+cantidadElecciones) = (listY(:,j)-(((listX(:,j).**2)*a)+((listX(:,j))*b)+c)).**2;
-           compararErrores(1,i) += (listY(:,j)-(((listX(:,j).**2)*a)+((listX(:,j))*b)+c)).**2;
+           compararErrores(1,2) += (listY(:,j)-(((listX(:,j).**2)*a)+((listX(:,j))*b)+c)).**2;
           endfor
         case(3)
           [matrizAproximacion] = aproximacionPotencial(listX, listY, decimales);
@@ -241,7 +241,7 @@ function interfazComparaciones()
           b = Solucion(1,1);
           for j = 1:cantFilas(1,2)
             Error(j,i+3+cantidadElecciones) = (listY(:,j)-(a*(listX(:,j).**b))).**2;
-            compararErrores(1,i) += (listY(:,j)-(a*(listX(:,j).**b))).**2;
+            compararErrores(1,3) += (listY(:,j)-(a*(listX(:,j).**b))).**2;
           endfor
          case(4)
           [matrizAproximacion] = aproximacionExponencial(listX, listY, decimales);
@@ -254,7 +254,7 @@ function interfazComparaciones()
           b = Solucion(2,1);
           for j = 1:cantFilas(1,2)
             Error(j,i+3+cantidadElecciones) = (listY(:,j)-(b*(e.**(a*listX(:,j))))).**2; 
-            compararErrores(1,i) += (listY(:,j)-(b*(e.**(a*listX(:,j))))).**2; 
+            compararErrores(1,4) += (listY(:,j)-(b*(e.**(a*listX(:,j))))).**2; 
           endfor
           case(5)
           [matrizAproximacion] = aproximacionHiperbolica(listX, listY, decimales);
@@ -267,12 +267,12 @@ function interfazComparaciones()
           b = Solucion(2,1);
           for j = 1:cantFilas(1,2)
             Error(j,i+3+cantidadElecciones) = (listY(:,j)-(b*((listX(:,j)+a).**(-1)))).**2;
-            compararErrores(1,i) += (listY(:,j)-(b*((listX(:,j)+a).**(-1)))).**2;
+            compararErrores(1,5) += (listY(:,j)-(b*((listX(:,j)+a).**(-1)))).**2;
           endfor
           endswitch
         endfor
         msgbox(disp(Error), "Comparacion de aproximaciones:\n\n", "none");
-       errorMinimo(compararErrores); 
+       errorMinimo(compararErrores, decimales); 
       endif
    endif
   endfunction
