@@ -388,9 +388,6 @@ endfunction
 
 function mostrarFuncionAproximante(tipoFuncion, listX, listY, decimales)
   [funcion]= obtenerFuncion(tipoFuncion,listX,listY, decimales);
-  syms x;
-  g = symfun(funcion,x);
-  msgbox(cstrcat("La funcion es: \n\n",disp(g),"\n\n"));
 endfunction
 
 function [funcion] = obtenerFuncion(tipoFuncion,listX,listY, cantidadDecimales)
@@ -404,6 +401,7 @@ function [funcion] = obtenerFuncion(tipoFuncion,listX,listY, cantidadDecimales)
       Solucion(1,1) = redondear(Solucion(1,1),cantidadDecimales);
       Solucion(2,1) = redondear(Solucion(2,1),cantidadDecimales);
       funcion = @(x)x*Solucion(1,1)+Solucion(2,1);
+      msgbox(cstrcat("La funcion es: \n\n","y= ",num2str(Solucion(1,1)),"x +",num2str(Solucion(2,1))),"none");
     case(2)
       [matrizAproximacion] = aproximacionParabola(listX, listY, cantidadDecimales);
       Matrix1 = [matrizAproximacion(cantFilas(1,2)+1,3), matrizAproximacion(cantFilas(1,2)+1,4), matrizAproximacion(cantFilas(1,2)+1,5);matrizAproximacion(cantFilas(1,2)+1,1), matrizAproximacion(cantFilas(1,2)+1,3), matrizAproximacion(cantFilas(1,2)+1,4);cantFilas(1,2), matrizAproximacion(cantFilas(1,2)+1,1), matrizAproximacion(cantFilas(1,2)+1,3)];
@@ -413,6 +411,7 @@ function [funcion] = obtenerFuncion(tipoFuncion,listX,listY, cantidadDecimales)
       Solucion(2,1) = redondear(Solucion(2,1),cantidadDecimales);
       Solucion(3,1) = redondear(Solucion(3,1),cantidadDecimales);
       funcion = @(x)x.^2*Solucion(3,1)+x*Solucion(2,1)+Solucion(1,1);
+       msgbox(cstrcat("La funcion es: \n\n","y= ",num2str(Solucion(3,1)),"x^2 +",num2str(Solucion(2,1)),"x +",num2str(Solucion(1,1))),"none");
     case(3)
       [matrizAproximacion] = aproximacionPotencial(listX, listY, cantidadDecimales);
       Matrix1 = [matrizAproximacion(cantFilas(1,2)+1,4), matrizAproximacion(cantFilas(1,2)+1,3) ; matrizAproximacion(cantFilas(1,2)+1,3), cantFilas(1,2)]
@@ -423,6 +422,7 @@ function [funcion] = obtenerFuncion(tipoFuncion,listX,listY, cantidadDecimales)
       Solucion(sizeMatrix2(1,1),1) = redondear(exp(Solucion(sizeMatrix2(1,1),1)),cantidadDecimales);
       Solucion(2,1) = redondear(Solucion(2,1),cantidadDecimales);
       funcion = @(x)Solucion(2,1)*x.^(Solucion(1,1));
+      msgbox(cstrcat("La funcion es : \n\n","y=",num2str(Solucion(2,1)),"x^",num2str(Solucion(1,1))),"none");
     case(4)
       [matrizAproximacion] = aproximacionExponencial(listX, listY, cantidadDecimales);
       Matrix1 = [matrizAproximacion(cantFilas(1,2)+1,3), matrizAproximacion(cantFilas(1,2)+1,1);matrizAproximacion(cantFilas(1,2)+1,1), cantFilas(1,2)];
@@ -431,6 +431,7 @@ function [funcion] = obtenerFuncion(tipoFuncion,listX,listY, cantidadDecimales)
       Solucion(1,1) = redondear(Solucion(1,1),cantidadDecimales);
       Solucion(2,1) = redondear(exp(Solucion(2,1)),cantidadDecimales);
       funcion = @(x)Solucion(2,1)*e.^(Solucion(1,1)*x) ;
+      msgbox(cstrcat("La funcion es : \n\n",num2str(Solucion(2,1)),"e^(",num2str(Solucion(1,1)),"x)"),"none")
     case(5)
       [matrizAproximacion] = aproximacionHiperbolica(listX, listY, cantidadDecimales);
       Matrix1 = [cantFilas(1,2),matrizAproximacion(cantFilas(1,2)+1,1);matrizAproximacion(cantFilas(1,2)+1,1),matrizAproximacion(cantFilas(1,2)+1,3)];
@@ -439,6 +440,7 @@ function [funcion] = obtenerFuncion(tipoFuncion,listX,listY, cantidadDecimales)
       Solucion(1,1) = redondear(Solucion(1,1)*(Solucion(2,1).**(-1)),cantidadDecimales);
       Solucion(2,1) = redondear(Solucion(2,1).**(-1),cantidadDecimales);
       funcion = @(x)Solucion(2,1)*((x+Solucion(1,1)).^(-1));
+        msgbox(cstrcat("La funcion es: \n\n","y= ",num2str(Solucion(2,1)),"/(x +",num2str(Solucion(1,1)),")"),"none");
   endswitch
 endfunction
 
