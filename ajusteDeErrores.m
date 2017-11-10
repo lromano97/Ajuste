@@ -69,9 +69,9 @@ function [matrizAproximacion] = aproximacionHiperbolica(listX, listY, decimales)
   matrizAproximacion = zeros(cantFilas(1,2)+1, 4);
   for i = 1:cantFilas(1,2)
     matrizAproximacion(i,1) = listX(1,i);
-    matrizAproximacion(i,2) = listY(1,i);
+    matrizAproximacion(i,2) = listY(1,i)**(-1);
     matrizAproximacion(i, 3) = redondear(listX(1,i).**2, decimales);
-    matrizAproximacion(i, 4) = redondear(listX(1,i)*listY(1,i), decimales);
+    matrizAproximacion(i, 4) = redondear(listX(1,i)*matrizAproximacion(i,2), decimales);
   endfor
   matrizAproximacion(cantFilas(1,2)+1,1) = sum(matrizAproximacion(:,1));
   matrizAproximacion(cantFilas(1,2)+1,2) = sum(matrizAproximacion(:,2));
