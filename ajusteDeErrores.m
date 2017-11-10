@@ -163,7 +163,7 @@ function errorMinimo(compararErrores, decimales)
   cantidadAproxs = size(compararErrores);
   j = 1;
   for i = 1:cantidadAproxs(1,2)
-    if(compararErrores(1,i)!=0)
+    if(compararErrores(1,i)!=(-1))
     matrizMinima(1,j) = compararErrores(1,i);
     j = j+1;
     endif
@@ -183,6 +183,12 @@ function errorMinimo(compararErrores, decimales)
   endswitch
 endfunction
 
+function [compararErrores] = inicializarMatrizValorNegativo()
+  for i = 1:5
+    compararErrores(1,i) = -1;
+    endfor
+endfunction
+
 function interfazComparaciones()
   datosAproximacion = inputdlg({"Ingrese la lista de valores para X","Ingrese la lista de valores de Y", "Ingrese la cantidad de decimales de la aproximacion"},"Ajuste App",[0.5]);
   if(or(isempty(datosAproximacion{1}), isempty(datosAproximacion{2}), isempty(datosAproximacion{3})))
@@ -197,7 +203,7 @@ function interfazComparaciones()
       [Eleccion,ok] = listdlg ("ListString", listaDeOpciones,"SelectionMode", "Multiple"); 
       cantidadElecciones = numel(Eleccion);
       [Error] = cargarValoresXeY(cantidadElecciones,listX,listY);
-      compararErrores = zeros(1,5);
+      compararErrores = inicializarMatrizValorNegativo();
       if (ok == 1)
         for i = 1:cantidadElecciones
         switch(Eleccion(i))
@@ -210,6 +216,7 @@ function interfazComparaciones()
           Solucion(2,1) = redondear(Solucion(2,1),decimales);
           a = Solucion(1,1);
           b = Solucion(2,1);
+          compararErrores(1,1) = 0;
           for j = 1:cantFilas(1,2)
           Error(j,i+3+cantidadElecciones) = ((listY(:,j)-(listX(:,j)*a+b)).**2);
           compararErrores(1,1) += ((listY(:,j)-(listX(:,j)*a+b)).**2);
@@ -224,6 +231,7 @@ function interfazComparaciones()
           a = Solucion(1,1);
           b = Solucion(2,1);
           c = Solucion(3,1);
+          compararErrores(1,2) = 0;
           for j = 1:cantFilas(1,2)
            Error(j,i+3+cantidadElecciones) = (listY(:,j)-(((listX(:,j).**2)*a)+((listX(:,j))*b)+c)).**2;
            compararErrores(1,2) += (listY(:,j)-(((listX(:,j).**2)*a)+((listX(:,j))*b)+c)).**2;
@@ -239,6 +247,7 @@ function interfazComparaciones()
           Solucion(2,1) = redondear(Solucion(2,1),decimales);
           a = Solucion(2,1);
           b = Solucion(1,1);
+          compararErrores(1,3) = 0;
           for j = 1:cantFilas(1,2)
             Error(j,i+3+cantidadElecciones) = (listY(:,j)-(a*(listX(:,j).**b))).**2;
             compararErrores(1,3) += (listY(:,j)-(a*(listX(:,j).**b))).**2;
@@ -252,6 +261,7 @@ function interfazComparaciones()
           Solucion(2,1) = redondear(exp(Solucion(2,1)),decimales);
           a = Solucion(1,1);
           b = Solucion(2,1);
+          compararErrores(1,4) = 0;
           for j = 1:cantFilas(1,2)
             Error(j,i+3+cantidadElecciones) = (listY(:,j)-(b*(e.**(a*listX(:,j))))).**2; 
             compararErrores(1,4) += (listY(:,j)-(b*(e.**(a*listX(:,j))))).**2; 
@@ -265,6 +275,7 @@ function interfazComparaciones()
           Solucion(2,1) = redondear(Solucion(2,1).**(-1),decimales);
           a = Solucion(1,1);
           b = Solucion(2,1);
+          compararErrores(1,5) = 0;
           for j = 1:cantFilas(1,2)
             Error(j,i+3+cantidadElecciones) = (listY(:,j)-(b*((listX(:,j)+a).**(-1)))).**2;
             compararErrores(1,5) += (listY(:,j)-(b*((listX(:,j)+a).**(-1)))).**2;
