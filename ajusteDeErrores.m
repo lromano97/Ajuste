@@ -218,8 +218,9 @@ function interfazComparaciones()
           b = Solucion(2,1);
           compararErrores(1,1) = 0;
           for j = 1:cantFilas(1,2)
-          Error(j,i+3+cantidadElecciones) = ((listY(:,j)-(listX(:,j)*a+b)).**2);
-          compararErrores(1,1) += ((listY(:,j)-(listX(:,j)*a+b)).**2);
+          Error(j,i+3) = redondear(listX(:,j)*a+b,decimales);
+          Error(j,i+3+cantidadElecciones) = redondear(((listY(:,j)-(listX(:,j)*a+b)).**2),decimales);
+          compararErrores(1,1) += redondear(((listY(:,j)-(listX(:,j)*a+b)).**2),decimales);
           endfor
         case(2)
           [matrizAproximacion] = aproximacionParabola(listX, listY, decimales);
@@ -233,8 +234,9 @@ function interfazComparaciones()
           c = Solucion(3,1);
           compararErrores(1,2) = 0;
           for j = 1:cantFilas(1,2)
-           Error(j,i+3+cantidadElecciones) = (listY(:,j)-(((listX(:,j).**2)*a)+((listX(:,j))*b)+c)).**2;
-           compararErrores(1,2) += (listY(:,j)-(((listX(:,j).**2)*a)+((listX(:,j))*b)+c)).**2;
+           Error(j,i+3) = redondear((((listX(:,j).**2)*a)+((listX(:,j))*b)+c),decimales);
+           Error(j,i+3+cantidadElecciones) = redondear((listY(:,j)-(((listX(:,j).**2)*a)+((listX(:,j))*b)+c)).**2,decimales);
+           compararErrores(1,2) += redondear((listY(:,j)-(((listX(:,j).**2)*a)+((listX(:,j))*b)+c)).**2,decimales);
           endfor
         case(3)
           [matrizAproximacion] = aproximacionPotencial(listX, listY, decimales);
@@ -249,8 +251,9 @@ function interfazComparaciones()
           b = Solucion(1,1);
           compararErrores(1,3) = 0;
           for j = 1:cantFilas(1,2)
-            Error(j,i+3+cantidadElecciones) = (listY(:,j)-(a*(listX(:,j).**b))).**2;
-            compararErrores(1,3) += (listY(:,j)-(a*(listX(:,j).**b))).**2;
+            Error(j,i+3) = redondear(a*((listX(:,j).**b)),decimales);
+            Error(j,i+3+cantidadElecciones) = redondear(((listY(:,j)-(a*(listX(:,j).**b))).**2),decimales);
+            compararErrores(1,3) += redondear(((listY(:,j)-(a*(listX(:,j).**b))).**2),decimales);
           endfor
          case(4)
           [matrizAproximacion] = aproximacionExponencial(listX, listY, decimales);
@@ -263,8 +266,9 @@ function interfazComparaciones()
           b = Solucion(2,1);
           compararErrores(1,4) = 0;
           for j = 1:cantFilas(1,2)
-            Error(j,i+3+cantidadElecciones) = (listY(:,j)-(b*(e.**(a*listX(:,j))))).**2; 
-            compararErrores(1,4) += (listY(:,j)-(b*(e.**(a*listX(:,j))))).**2; 
+            Error(j,i+3) = redondear((b*(e.**(a*listX(:,j)))),decimales);
+            Error(j,i+3+cantidadElecciones) = redondear(((listY(:,j)-(b*(e.**(a*listX(:,j))))).**2),decimales); 
+            compararErrores(1,4) += redondear(((listY(:,j)-(b*(e.**(a*listX(:,j))))).**2),decimales); 
           endfor
           case(5)
           [matrizAproximacion] = aproximacionHiperbolica(listX, listY, decimales);
@@ -277,8 +281,9 @@ function interfazComparaciones()
           b = Solucion(2,1);
           compararErrores(1,5) = 0;
           for j = 1:cantFilas(1,2)
-            Error(j,i+3+cantidadElecciones) = (listY(:,j)-(b*((listX(:,j)+a).**(-1)))).**2;
-            compararErrores(1,5) += (listY(:,j)-(b*((listX(:,j)+a).**(-1)))).**2;
+            Error(j,i+3) = redondear((b*((listX(:,j)+a).**(-1))),decimales);
+            Error(j,i+3+cantidadElecciones) = redondear(((listY(:,j)-(b*((listX(:,j)+a).**(-1)))).**2),decimales);
+            compararErrores(1,5) += redondear(((listY(:,j)-(b*((listX(:,j)+a).**(-1)))).**2),redondear);
           endfor
           endswitch
         endfor
